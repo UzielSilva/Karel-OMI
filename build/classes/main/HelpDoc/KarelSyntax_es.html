@@ -1,0 +1,200 @@
+<body style="background-image: url(workbook.png);">
+    <center>
+<h2>KAREL OMI Versi&oacute;n 2.0 por Cesar Cepeda</h2>
+<h3>Revisado por Eduardo Urias Barrientos AKA Wero Shinoda</h2>
+
+ <h1><a href="Karel.htm"> TUTORIAL DE KAREL</a></h1>
+ 
+ <h1>BNF para Karel: Sintaxis de Pascal </h1>
+ <h2>Traducido por Eric Alvarez, Revisado por Joaquin L&oacute;pez, Adaptado por Germ&aacute;n Gonz&aacute;lez </h2>
+ <h3>(el simulador no ditingue may&uacute;sculas/min&uacute;sculas) </h3>
+
+
+<table  cellspacing="10">
+    <tr valign="top">
+    <td align="right">DeclaracionDePrograma </td>
+    <td> ::=</td>
+    <td>"iniciar-programa"<br>
+       &nbsp;&nbsp;&nbsp;&nbsp;[ <a href="#prod4">DeclaracionDeProcedimiento </a>";" ]...<br>
+       &nbsp;&nbsp;&nbsp;&nbsp;"inicia-ejecucion"<br>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#prod9">ExpresionGeneral</a> [ ";"<br>
+       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#prod9">ExpresionGeneral</a> ]...<br>
+       &nbsp;&nbsp;&nbsp;&nbsp;"termina-ejecucion"<br>
+"finalizar-programa"<br>
+<a href="#EOF"> EOF</a></td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod4"></a>DeclaracionDeProcedimiento</td>
+    <td>::=</td>
+    <td>"define-nueva-instruccion" <a href="#identifier">Identificador</a> [ "(" <a href="#identifier">Identificador </a>")" ] "como"<br>
+       &nbsp;&nbsp;&nbsp;&nbsp;<a href="#prod10">Expresion</a></td>
+</tr>
+<tr>
+    <td align="right"><a name="prod9"></a>ExpresionGeneral</td>
+    <td>::=</td>
+    <td>{ <a href="#prod10">Expresion</a> | <a href="#prod21">ExpresionVacia</a> }
+
+Expresion</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod10"></a>Expresion</td>
+    <td>::=</td>
+    <td>{"apagate"<br>
+| "gira-izquierda"<br>
+| "avanza"<br>
+| "coge-zumbador"<br>
+| "deja-zumbador"<br>
+| "sal-de-instruccion"<br>
+| <a href="#prod20">ExpresionLlamada</a><br>
+| <a href="#prod12">ExpresionSi</a><br>
+| <a href="#prod13">ExpresionMientras</a><br>
+| <a href="#prod14">ExpresionPara</a><br>
+| "inicio"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#prod9">ExpresionGeneral</a> [ ";"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#prod9">ExpresionGeneral</a> ]...<br>
+  "fin" }</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod20"></a>ExpresionLlamada</td>
+    <td>::=</td>
+    <td><a href="#identifier">Identificador</a> [ "(" <a href="#prod22">ExpresionEntera</a> ")" ]</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod12"></a>ExpresionSi</td>
+    <td>::=</td>
+    <td>"si" <a href="#prod23">Termino</a> "entonces"<br>
+       &nbsp;&nbsp;&nbsp;&nbsp;<a href="#prod10">Expresion</a><br>
+["sino"<br>
+       &nbsp;&nbsp;&nbsp;&nbsp;<a href="#prod10">Expresion</a> ]</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod13"></a>ExpresionMientras</td>
+    <td>::=</td>
+    <td>"mientras" <a href="#prod23">Termino</a> "hacer"<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<a href="#prod10">Expresion</a></td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod14"></a>ExpresionPara</td>
+    <td>::=</td>
+    <td>"repetir" <a href="#prod22">ExpresionEntera</a> "veces"<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<a href="#prod10">Expresion</a></td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod21"></a>ExpresionVacia</td>
+    <td>::=</td>
+    <td></td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod23"></a>Termino</td>
+    <td>::=</td>
+    <td><a href="#prod24">ClausulaY</a> [ "o" <a href="#prod24">ClausulaY</a> ]...</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod24"></a>ClausulaY</td>
+    <td>::=</td>
+    <td><a href="#prod25">ClausulaNo</a> [ "y" <a href="#prod25">ClausulaNo</a> ]...</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod25"></a>ClausulaNo</td>
+    <td>::=</td>
+    <td>[ "no" ] <a href="#prod26">ClausulaAtomica</a></td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod26"></a>ClausulaAtomica</td>
+    <td>::=</td>
+    <td>{ "si-es-cero" "(" <a href="#prod22">ExpresionEntera</a> ")" | <a href="#booleanfunction">FuncionBooleana</a> | "(" <a href="#prod23">Termino</a> ")" }</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod22"></a>ExpresionEntera</td>
+    <td>::=</td>
+    <td>{ <a href="#decimal">Decimal</a> | <a href="#identifier">Identificador</a> | "precede" "(" <a href="#prod22">ExpresionEntera</a> ")" 
+    | "sucede" "(" <a href="#prod22">ExpresionEntera</a> ")" }</td>
+</tr>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="identifier"></a>Identificador</td>
+    <td>::=</td>
+    <td><a href="#letra">Letra </a> [ <a href="#letra">Letra</a> | <a href="#digit">Digito</a> | "-" ] ...</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="decimal"></a>Decimal</td>
+    <td>::=</td>
+    <td>{ {"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"} [ <a href="#digit">Digito</a> ] ...<br>
+| "0" }</td>
+</tr>
+
+<tr valign="top">
+    <td align="right">Cadena</td>
+    <td>::=</td>
+    <td>Cualquier cosa entre comillas en una única línea.</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="booleanfunction"></a>FuncionBooleana</td>
+    <td>::=</td>
+    <td>{"frente-libre"<br>
+| "frente-bloqueado"<br>
+| "izquierda-libre"<br>
+| "izquierda-bloqueada"<br>
+| "derecha-libre"<br>
+| "derecha-bloqueada"<br>
+| "junto-a-zumbador"<br>
+| "no-junto-a-zumbador"<br>
+| "algun-zumbador-en-la mochila"<br>
+| "ningun-zumbador-en-la mochila"<br>
+| "orientado-al-norte"<br>
+| "orientado-al-sur"<br>
+| "orientado-al-este"<br>
+| "orientado-al-oeste"<br>
+| "no-orientado-al-norte"<br>
+| "no-orientado-al-sur"<br>
+| "no-orientado-al-este"<br>
+| "no-orientado-al-oeste"}</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="digit"></a>Digito</td>
+    <td>::=</td>
+    <td>{"0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"|"8"|"9"}</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="letra"></a>Letra</td>
+    <td>::=</td>
+    <td>Una letra del alfabeto</td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="EOF"></a>EOF</td>
+    <td>::=</td>
+    <td>Marca de final de fichero.</td>
+</tr>
+</table>
+                                               
+<h2>Definiciones del Panel Instantaneo</h2>
+
+<table>
+<tr valign="top">
+    <td align="right">ProgramaInstantaneo</td>
+    <td>::=</td>
+    <td><a href="#prod8">ExpresionInstantanea</a> [ ";"<br>
+<a href="#prod8">ExpresionInstantanea</a> ]...<br>
+<a href="#EOF">EOF</a></td>
+</tr>
+<tr valign="top">
+    <td align="right"><a name="prod8"></a>ExpresionInstantanea</td>
+    <td>::=</td>
+    <td>{ <a href="#prod4">DeclaracionDeMetodo</a> | <a href="#prod5">DeclaracionDeEnlace</a> | 
+    <a href="#prod9">ExpresionGeneral</a> }</td>
+</tr>
+</table>
+<h2>Comentarios</h2>
+
+Est&aacute;n soportados los dos estilos de comentario en Pascal:<br>
+
+    { Comentario en la misma l&iacute;nea }<br>
+    (* Comentario en la misma l&iacute;nea *)<br>
+Est&aacute;n soportados los dos estilos de comentario en Java/C++:<br>
+
+    {/* Comentario en la misma l&iacute;nea */}<br>
+    (// Comentario para el resto de l&iacute;nea)
+ <hr/>
+Final-de-p&aacute;gina <hr/>
+</center>
+</body>

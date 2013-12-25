@@ -1,0 +1,55 @@
+<body style="background-image: url(workbook.png);">
+<center><h2>La sentencia define-nueva-instruccion/como</h2></center>
+Hasta ahora, le hemos dicho a Karel exactamente lo que ten&iacute;a que hacer tal como necesit&aacute;bamos que lo hiciese. Esto funciona bien, pero te pudiste haber dado cuenta de que siempre se utilizan 
+secuencias de sentencias similares. Un ejemplo es cuando Karel tiene que girar a la derecha, y nosotros le decimos " gira-izquierda; gira-izquierda; gira-izquierda; ". &iquest;No ser&iacute;a m&aacute;s f&aacute;cil si le 
+pudi&eacute;ramos decir simplemente "gira-derecha" ?.
+<p>En otras palabras, diciendo " gira-derecha; " Karel girar&iacute;a tres veces hacia la izquierda para alcanzar nuestro objetivo. Es posible. &iquest;Est&aacute;s suficientemente  motivado  para aprender una nueva 
+sentencia?</p>
+<p>Una de las razones de crear nuevas instrucciones, es por evitar escribir tanto. Otra es para documentar mejor cual es nuestro objetivo, cuando nosotros mismos u otra persona lee el programa. 
+Como seguramente te estar&aacute;s dando cuenta, programar es una tarea extremadamente compleja, y &iexcl;necesitamos toda la ayuda necesaria para hacer las cosas correctamente&iexcl;</p>
+<p>Las sentencias <b>define-nueva-instrucion</b> est&aacute;n situadas en un sitio especial dentro de un programa de Karel, justo despu&eacute;s de la sentencia iniciar-programa. El siguiente es un programa 
+v&aacute;lido para Karel:</p>
+<center><img src="image023.png" border="1"/> </center>
+<p>Puedes definir cualquier n&uacute;mero de instrucciones nuevas, y despu&eacute;s usarlas en el programa donde las necesites. Las instrucciones nuevas pueden contener sentencias de control, si es necesario. 
+Date cuenta de que la nueva instrucci&oacute;n puede tambi&eacute;n usar una instrucci&oacute;n definida previamente. El ejercicio 5 podr&iacute;a haberse escrito:</p>
+<center><img src="image024.png"/></center></p>
+<p>Date cuenta de como la instrucci&oacute;n repetir acaba moviendo a Karel una esquina hacia adelante, sin tener en cuenta en n&deg; de zumbadores. Si haces esto 14 veces, &iexcl;estar&aacute;s en casa&iexcl;</p>
+<p><b>Ejercicio 7:</b> Re-escribe el programa para el ejercicio 4, pero esta vez puede no haber un zumbador en cada esquina. Guarda tu programa con el nombre diagonal2.txt . La nueva instrucci&oacute;n 
+deber&iacute;a coger un zumbador en la posici&oacute;n actual, si es que lo hay. Deber&iacute;as usar esta instrucci&oacute;n para coger todos los zumbadores mientras Karel va a su casa en diagonal. Aseg&uacute;rate de que 
+tienes el mundo diagonal.mdo cargado y probar vuestro programa. Karel deber&iacute;a finalizar el la esquina de la 1&ordf; Calle con la 1&ordf; Avenida, con todos los zumbadores que ha ido cogiendo por el camino,
+ y apagarse.</p>
+<p><b>Ejercicio 8: </b>Escribe un programa que ayude a Karel a escapar de un laberinto que no contiene islas (cuadrados aislados). La salida del laberinto est&aacute; marcada ubicando un zumbador 
+en la primera esquina que est&aacute; fuera del laberinto, al lado del muro de la derecha. Una forma de resolver este problema es hacer que Karel avance a lo largo del laberinto siguiendo el muro 
+de su derecha ( imagina que est&aacute; tocando el muro y que nunca puede despegar su mano de &eacute;l). En la siguiente imagen hay un ejemplo de un laberinto del cual deber&iacute;a ser capaz de 
+salir (no olvides que tu programa deber&iacute;a funcionar en todos los laberintos, no solo en el de la imagen). Guarda tu programa con el nombre laberinto.txt . Esto parece muy, muy complicado. 
+&iquest;Puedes darnos un mundo de ejemplo?</p>
+<p> Aqu&iacute; ten&eacute;is un mundo inicial de ejemplo. La l&iacute;nea roja muestra el camino que deber&iacute;a seguir Karel para este mundo. Recuerda que no sabes de antemano donde 
+estar&aacute;n los muros.&nbsp;</p>
+<center><img src="image026.png" border="1" /></center>
+<p> Podr&iacute;a hacerse m&aacute;s f&aacute;cil si definieras unas pocas nuevas instrucciones que hicieran parte del trabajo. Aqu&iacute; tienes un ejemplo:</p>
+<p>...</p>
+<p>define-nueva-instruccion sigue-muro-derecha como inicio </p>
+<p> &nbsp;&nbsp; {pon tu c&oacute;digo aqu&iacute;} </p>
+<p> fin ;</p>
+<p> ...</p>
+<p>Esta instrucci&oacute;n hace que Karel avance correctamente hacia el siguiente segmento de muro. Los diagramas de abajo muestran las 4 situaciones, Karel podr&iacute;a estar en cualquier punto 
+del laberinto. Si <b>sigue-muro-derecha</b> resuelve correctamente los 4 casos, entonces has solucionado la parte principal del problema. Tambi&eacute;n deber&iacute;as definir <b>gira-derecha</b>.</p>
+<p> Para probar tu programa crea un mundo como el del ejemplo y gu&aacute;rdalo con el nombre laberinto.mdo . Una vez te funcione el programa para este mundo, prueba a modificarlo 
+an&ntilde;adi&eacute;ndo o quitando muros. &iquest;Realiza Karel la tarea bien <strong>en todos los casos</strong>? </p>
+<center>
+  <table border="2">
+    <tr>
+      <td><img src="image028.png"/></td>
+      <td><img src="image032.png"/></td>
+    </tr>
+    <tr>
+      <td><center>Situaciones iniciales</center></td>
+      <td><center>Movimientos respectivos</center></td>
+    </tr>
+  </table>
+</center>
+<h2><center>
+<p>La sentencia define-nueva-instruccion/como</p>
+<a href="Karel.htm">Regresar</a>
+</center></h2>
+</body>
