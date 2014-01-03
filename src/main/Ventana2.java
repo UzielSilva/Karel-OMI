@@ -2,6 +2,7 @@ package main;
 
 import CompilerPascalES.LexerPascal;
 import CompilerPascalES.ParserPascal;
+import CompilerPascalES.Program;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -11,6 +12,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.undo.UndoManager;
+import CompilerPascalES.EnvironmentK;
 
 /**
  * @author German Gonzalez
@@ -21,6 +23,11 @@ public class Ventana2 extends JFrame {
     public static File world;
     public static File code;
    
+    public static String[] parsedDoc;
+    public static Integer[] rows;
+    public static EnvironmentK env;
+    public static Program program;
+    
     public static EditorMapas Mpanel= new EditorMapas();
     public static VisorMapas Mpanel2=new VisorMapas();
     public static EditorCodigo textPane = new EditorCodigo();
@@ -426,7 +433,7 @@ return retValue;
         eadelante.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-//                Mpanel2.avanzauno();
+                avanzauno();
             }
         });
         einiciar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -517,6 +524,9 @@ return retValue;
             cGuardarComo();
         }
     }
+    private void avanzauno(){
+        System.out.println(program.nextAction());
+    }
     private void cCompila() {
         String contents="";
             try {
@@ -527,15 +537,19 @@ return retValue;
         LexerPascal lexer=new LexerPascal(read);
         ParserPascal parser = new ParserPascal(lexer);
         try {
-//            parser.parse();
+            parser.parse();
+            parsedDoc = parser.parsedDoc.toArray(new String[0]);
+            rows = parser.row.toArray(new Integer[0]);
+            env = new EnvironmentK();
+            program = new Program(parsedDoc,rows,env);
             System.out.println(contents);
             textPane2.setText(textPane.getText());
-        textPane.search(true);
-        textPane2.search(true);
+            textPane.search(true);
+            textPane2.search(true);
             Ventana2.Mpanel2.reset();
-        JOptionPane.showMessageDialog(this,"Programa Compilado","Karel",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,"Programa Compilado","Karel",JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this,"Error de compilacion","Karel",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this,"Error de compilacion: " + ex.getMessage(),"Karel",JOptionPane.INFORMATION_MESSAGE);
         }
 //        textPane.setText(Compilador.adjust(textPane.doc));
         

@@ -2,7 +2,7 @@ package CompilerPascalES;
 
 import java.util.HashMap;
 
-class Global{
+class PascalData{
 	
     protected static final KeyWord[] KeysArray = {
 
@@ -32,7 +32,7 @@ class Global{
         new KeyWord( "sucede"                       , SymbolsPascal.SUCC ),
         new KeyWord( "y"                            , SymbolsPascal.AND ),
         new KeyWord( "o"                            , SymbolsPascal.OR ),
-        new KeyWord( "no"                           , SymbolsPascal.OR ),
+        new KeyWord( "no"                           , SymbolsPascal.NOT ),
         new KeyWord( "sal-de-instruccion"           , SymbolsPascal.EXITINST ),
 
 
@@ -64,6 +64,7 @@ class Global{
         new KeyWord( "no-orientado-al-sur"          , SymbolsPascal.NOFACINGS ),
         new KeyWord( "no-orientado-al-este"         , SymbolsPascal.NOFACINGE ),
         new KeyWord( "no-orientado-al-oeste"        , SymbolsPascal.NOFACINGW ),
+        new KeyWord( "si-es-cero"                   , SymbolsPascal.IFZERO),
 
         new KeyWord( "name"                         , SymbolsPascal.NAME ),
         new KeyWord( "number"                       , SymbolsPascal.NUMBER ),

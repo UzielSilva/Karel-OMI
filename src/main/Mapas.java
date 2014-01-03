@@ -24,7 +24,7 @@ int h2=15;
     public byte flechad = 0;
     int ScrlV=95;
     int ScrlH=0;
-    int z = 0;
+    public int z = 0;
     public short[][] getzumbamap(){
         return zumbador;
     }

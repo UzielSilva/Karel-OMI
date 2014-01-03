@@ -1,7 +1,7 @@
 package main;
 
 import CompilerPascalES.LexerPascal;
-import CompilerPascalES.Box;
+import CompilerPascalES.PascalBox;
 import java.awt.*;
 import java.io.IOException;
 import java.io.Reader;
@@ -73,18 +73,18 @@ public class VisorCodigo extends JTextPane  {
                     int index=0;
                 while((n=(sym=lx.next_token()).sym)!=0){ 
                     if(n>=2&&n<=48){
-                    index=curline.indexOf(Box.getType(n),index);
+                    index=curline.indexOf(PascalBox.getType(n),index);
                     if(n==2)
-                        doc.setCharacterAttributes(start +index, Box.getType(n).length(), this.getStyle("Black"), true);
+                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("Black"), true);
                     if(n>=3&&n<=4)
-                        doc.setCharacterAttributes(start +index, Box.getType(n).length(), this.getStyle("red"), true);
+                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("red"), true);
                     if(n>=5&&n<=25)
-                        doc.setCharacterAttributes(start +index, Box.getType(n).length(), this.getStyle("cyan"), true);
+                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("cyan"), true);
                     if(n>=26&&n<=30)
-                        doc.setCharacterAttributes(start +index, Box.getType(n).length(), this.getStyle("green"), true);
+                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("green"), true);
                     if(n>=31&&n<=48)
-                        doc.setCharacterAttributes(start +index, Box.getType(n).length(), this.getStyle("orange"), true);
-                    index+=Box.getType(n).length();
+                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("orange"), true);
+                    index+=PascalBox.getType(n).length();
                     }
                     if(n==1){
                         doc.setCharacterAttributes(start , curline.length(), this.getStyle("error"), true);

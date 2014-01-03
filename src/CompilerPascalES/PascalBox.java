@@ -1,23 +1,21 @@
 package CompilerPascalES;
 
 import java.util.HashMap;
-import java.util.Scanner;
-import java_cup.runtime.Symbol;
 
-class Box {
+public class PascalBox {
     
     private static HashMap<String,Integer> KeysTable;
     
-    private static final KeyWord[] KeysArray = Global.KeysArray;
+    private static final KeyWord[] KeysArray = PascalData.KeysArray;
 
-    public Box(KeyWord k){
+    public PascalBox(KeyWord k){
         KeysTable.put(k.getKey(), k.getObj());
     }
     
     static {
         KeysTable = new HashMap();
             for(KeyWord k : KeysArray)
-                new Box(k);
+                new PascalBox(k);
     }
     
     public static Integer gets(String str){
@@ -31,12 +29,5 @@ class Box {
                 return k.getKey();
         }
         return null;
-    }
-    public static void main(String arg[]){
-        while(true){
-            Scanner s = new Scanner(System.in);
-            Integer i = s.nextInt();
-            System.out.println(getType(i));
-        }
     }
 }
