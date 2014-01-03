@@ -527,8 +527,7 @@ return retValue;
         LexerPascal lexer=new LexerPascal(read);
         ParserPascal parser = new ParserPascal(lexer);
         try {
-//            parser.parse();
-            System.out.println(contents);
+            parser.parse();
             textPane2.setText(textPane.getText());
         textPane.search(true);
         textPane2.search(true);

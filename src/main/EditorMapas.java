@@ -93,6 +93,7 @@ public class EditorMapas extends Mapas{
         byte yy = (byte) ((y / 2) + (94 - ScrlV));
         
         if (xx > 0 && yy >= 0 && xx < 101 && yy < 100) {
+                if (evt.getButton() == 1) {
             if ((x % 2 == 0 || y % 2 == 0) ) {
                 if (x % 2 == 0 && y % 2 == 1) {
                     boolean wls[] = Lib.byteBol(walls[xx + 1][yy + 1]);
@@ -114,13 +115,13 @@ public class EditorMapas extends Mapas{
                 x = -1;
                 y = -1;
             } else {
-                if (evt.getButton() == 1) {
                     Ventana2.mtzamba.setVisible(true);
                     Ventana2.mtzamba.setText(zumbador[xx + 1][yy + 1] + "");
                     Ventana2.mtzamba.select(0, Ventana2.mtzamba.getText().length());
                     Ventana2.mtzamba.setBounds(x * 16 - 8, this.getHeight() - (y * 16) - 21, 32, 24);
                     Ventana2.mtzamba.requestFocus();
-                } else {
+                
+            }}else {
                     yy = (byte) ((y / 2) + (95 - ScrlV));
                     if (xx != flechax || yy != flechay) {
                         flechax = xx;
@@ -131,7 +132,6 @@ public class EditorMapas extends Mapas{
                 x = -1;
                 y = -1;
                 }
-            }
         }
             Ventana2.Mpanel2.reset();
     }

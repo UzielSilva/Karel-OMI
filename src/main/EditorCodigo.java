@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.*;
-import java.awt.datatransfer.*;
 import java.io.*;
 import java.util.Scanner;
 import java.util.logging.*;
@@ -15,7 +14,6 @@ import javax.swing.undo.*;
  */
 public class EditorCodigo extends VisorCodigo implements Runnable {
 
-    private SimpleAttributeSet Attrib = new SimpleAttributeSet();
     protected UndoManager undoManager = new UndoManager();
     private Thread d=new Thread(this);
     private Caret caret = getCaret();
@@ -54,7 +52,7 @@ public class EditorCodigo extends VisorCodigo implements Runnable {
         try {
             BufferedWriter archivo = Lib.writes(f);
             try {
-                archivo.write(doc.getText(0, doc.getLength()).replace("|", " "));
+                archivo.write(doc.getText(0, doc.getLength()));
             } catch (BadLocationException ex) {
                 Logger.getLogger(EditorCodigo.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -64,44 +62,18 @@ public class EditorCodigo extends VisorCodigo implements Runnable {
             Logger.getLogger(EditorCodigo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public void pressed(boolean estaPresionado, boolean full) {
+boolean paste=false;
+    public void pressed(boolean ppaste) {
         caret();
-        time = 15;
+        if(!paste)paste=ppaste;
+        time = 10;
         if (!d.isAlive()) {
             d = new Thread(this);
             d.start();
         }
-        if (estaPresionado == true) {
-            if (full) {
-                start = 0;
-                end = doc.getLength();
-            }
-
-            int mark = caret.getMark() - start;
-            String espacio = tabula(mark, content);
-            mark += 1 + start;
-            try {
-                doc.insertString(mark - 1, espacio, Attrib);
-            } catch (BadLocationException ex) {
-                Logger.getLogger(EditorCodigo.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
 
     public void caret() {
-        try {
-            content = "";
-            viewport = Ventana2.cjScrollPane.getViewport();
-            startPoint = viewport.getViewPosition();
-            size = viewport.getExtentSize();
-            endPoint = new Point(startPoint.x + size.width, startPoint.y + size.height);
-            start = this.viewToModel(startPoint);
-            end = this.viewToModel(endPoint);
-            content = doc.getText(start, end - start).toLowerCase();
-        } catch (BadLocationException e) {
-        }
-
         try {
             int pos = caret.getDot();
             int x = (((this.modelToView(pos).x) - 37) / 8) + 1;
@@ -111,57 +83,28 @@ public class EditorCodigo extends VisorCodigo implements Runnable {
         }
     }
 
-    private String tabula(int posW, String content) {
-        int ultimaLinea = espacios(posW, content, 2);
-        int espaciosVacios = 0;
-        String espacio = "";
-        while ((" " + content + " ").charAt(ultimaLinea + 2 + espaciosVacios) == ' '
-                || (" " + content + " ").charAt(ultimaLinea + 2 + espaciosVacios) == '|') {
-            espaciosVacios += 1;
-            espacio += " ";
-
-        }
-        return espacio;
-    }
-
-    private int espacios(int posW, String content, int offset) {
-        int current = posW - offset;
-        while (current >= 0 && content.charAt(current) != '\n') {
-            current--;
-        }
-        return current;
-    }
-
-
-    public void tcopy() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        TransferHandler transferHandler = this.getTransferHandler();
-        transferHandler.exportToClipboard(this, clipboard, TransferHandler.COPY);
-    }
-
-    public void tpaste() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        TransferHandler transferHandler = this.getTransferHandler();
-        transferHandler.importData(this, clipboard.getContents(null));
-        try {
-            if (((String) clipboard.getContents(null).getTransferData(DataFlavor.stringFlavor)).split("\n").length > 18) {
-                search(true);
-            }
-        } catch (UnsupportedFlavorException ex) {
-            Logger.getLogger(EditorCodigo.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(EditorCodigo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     @Override
     public void run() {
         while (time > 0) {
             time--;
-            Lib.pause(40);
+            Lib.pause(15);
         }
         time = -1;
-        search(false);
+            int pos = caret.getDot();
+            viewport = Ventana2.cjScrollPane.getViewport();
+        try {
+            startPoint=new Point(0,this.modelToView(pos).y);
+        } catch (BadLocationException ex) {}
+            size = viewport.getExtentSize();
+            endPoint = new Point(size.width, startPoint.y +h-1);
+            start = this.viewToModel(startPoint);
+            end = this.viewToModel(endPoint);
+            try {
+                content = doc.getText(start, end - start).toLowerCase();
+            } catch (BadLocationException ex) {
+            }
+        search(paste);
+        paste=false;
     }
 
 }

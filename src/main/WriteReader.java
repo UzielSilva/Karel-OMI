@@ -76,7 +76,7 @@ public class WriteReader {
     private void wallszumba() throws IOException {
         int paredes = rd();
         int zumba = rd();
-        System.out.println(zumba);
+//        System.out.println(zumba);
         rd();
         for (int i = 0; i < paredes; i++){
             EditorMapas.walls[rd()+1][rd()] = (byte) rd();

@@ -8,6 +8,14 @@ import javax.swing.JPanel;
  * @author German gonzalez, Uziel Silva
  */
 public class Mapas extends JPanel {
+int x=150;
+int y=150;
+public int x2=15;
+public int y2=15;
+int w=20;
+int h=30;
+int w2=10;
+int h2=15;
     public static BufferedImage flecha[] = new BufferedImage[4];
     public static byte walls[][] = new byte[103][103];
     public short zumbador[][] = new short[103][103];
@@ -105,8 +113,6 @@ public class Mapas extends JPanel {
                 }
             }
         }
-
-
     }
 
 }

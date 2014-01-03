@@ -4,8 +4,9 @@ package main;
 /**
  * @author German gonzalez, Uziel Silva
  */
-public class Main{ 
+public class Karelotitlan{ 
     public static void main(String[] args) {
-       new Ventana2().setVisible(true);;
+       Ventana2 v=new Ventana2();
+       v.setVisible(true);
     }
 }
