@@ -153,8 +153,8 @@ definition_list     ::= /* No definitions */
 definition          ::= DEFINST new_statement AS statement SEMICOL:s {: parser.addDoc("RETURN",sleft); inInst = false;:}
         ;
 
-new_statement       ::= NAME:n defparameter {: customParamInst.put(n,parser.docSize + 1); inInst = true;:}
-        |               NAME:n {: customInst.put(n,parser.docSize + 1); inInst = true; :}
+new_statement       ::= NAME:n defparameter {: customParamInst.put(n,parser.docSize); inInst = true;:}
+        |               NAME:n {: customInst.put(n,parser.docSize); inInst = true; :}
         ;
 
 defparameter        ::= LPAREN NAME:n RPAREN {: contextParam = n; :}
@@ -227,8 +227,8 @@ while              ::=  WHILE conditional:c dokey:d statement:s  {:
 
                             parser.addDoc("BRANCH",sleft);
                             RESULT = 1 + c + d + s + 2;
-                            parser.addDoc((new Integer(parser.docSize - RESULT + 1)).toString(),sleft);
-                            parser.setDoc(parser.docSize.toString(),sleft,parser.docSize-(s+2));
+                            parser.addDoc((new Integer(parser.docSize - RESULT + 2)).toString(),sleft);
+                            parser.setDoc(parser.docSize.toString(),sleft,parser.docSize-(s+3));
 
                         :}
         ;

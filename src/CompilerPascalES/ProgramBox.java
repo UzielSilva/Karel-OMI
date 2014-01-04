@@ -2,7 +2,7 @@ package CompilerPascalES;
 
 import java.util.HashMap;
 
-class ProgramBox {
+public class ProgramBox {
     
     private static HashMap<String,Integer> KeysTable;
     private static HashMap<String,Integer> ActionsTable;
@@ -28,10 +28,10 @@ class ProgramBox {
                 new ProgramBox(k,0);
         ActionsTable = new HashMap();
             for(KeyWord k : ActionsArray)
-                new ProgramBox(k,0);
+                new ProgramBox(k,1);
         ConditionsTable = new HashMap();
             for(KeyWord k : ConditionsArray)
-                new ProgramBox(k,0);
+                new ProgramBox(k,2);
     }
     
     public static Integer gets(String str){

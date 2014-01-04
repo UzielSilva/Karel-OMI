@@ -1,8 +1,10 @@
 package main;
 
+import CompilerPascalES.EnvironmentK;
 import CompilerPascalES.LexerPascal;
 import CompilerPascalES.ParserPascal;
 import CompilerPascalES.Program;
+import com.apple.eawt.Application;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -12,7 +14,6 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.undo.UndoManager;
-import CompilerPascalES.EnvironmentK;
 
 /**
  * @author German Gonzalez
@@ -20,6 +21,9 @@ import CompilerPascalES.EnvironmentK;
 public class Ventana2 extends JFrame {
 
     boolean action = false;
+    private boolean Mapedit=false;
+    private boolean Codedit=false;
+    
     public static File world;
     public static File code;
    
@@ -67,41 +71,50 @@ public class Ventana2 extends JFrame {
     private JEditorPane help= new JEditorPane("text/html",""); 
     public static JScrollPane cjScrollPane= new JScrollPane();
     public JScrollPane ejScrollPane2= new JScrollPane(textPane2);
-@Override
-public Image getIconImage() {
-Image retValue = Toolkit.getDefaultToolkit().
-getImage(ClassLoader.getSystemResource("Logo.png"));
 
-
-return retValue;
-}
     public Ventana2(){
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("KAREL OMI por German Gonzalez y Uziel Silva");
         setMinimumSize(new Dimension(660, 380));
-        
-//addWindowListener(new WindowAdapter(){
-//	public void windowClosing(WindowEvent we){
-//		int eleccion = JOptionPane.showConfirmDialog(null, "Hay cambios sin guardar en el mapa, decea salir sin guardar?");
-//		if ( eleccion == 0) {
-//			System.exit(0);
-//		}			
-//                if ( eleccion == 1) {
-//            mGuardarComo();
-//		}	
-//	}
-//});
-//    Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource ("logo.png"));
-//    this.setIconImage(image);
-//        try {
-//            Application application = Application.getApplication();
-//            application.setDockIconImage(image);
-//        } catch (Exception e) {
-//        }
+addWindowListener(new WindowAdapter(){
+	public void windowClosing(WindowEvent we){
+            boolean close=false;
+            if(Mapedit){
+		int eleccion = JOptionPane.showConfirmDialog(null, "Hay cambios sin guardar en el mapa, desea guardar los cambios?");
+		if ( eleccion == 1) {
+                    close=true;
+		}			
+                if ( eleccion == 0) {
+                    mGuardar();
+		}
+            }
+            if(Codedit){
+		int eleccion = JOptionPane.showConfirmDialog(null, "Hay cambios sin guardar en el código, desea guardar los cambios?");
+		if ( eleccion == 1) {
+                    close=true;
+		}			
+                if ( eleccion == 0) {
+                    cGuardar();
+		}
+            }
+                if(close || (!Mapedit&&!Codedit))
+                System.exit(0);
+                      
+	}
+});
+    Image image = Toolkit.getDefaultToolkit().getImage(Ventana2.class.getResource ("Logo.png"));
+    this.setIconImage(image);
+        try {
+            Application application = Application.getApplication();
+            application.setDockIconImage(image);
+        } catch (Exception e) {
+        }
         cjScrollPane.setViewportView(textPane);
         ejScrollPane2.setViewportView(textPane2);
         cjScrollPane.setBorder(null);
         ejScrollPane2.setBorder(null);
+//        textPane.setUI(new javax.swing.plaf.basic.BasicEditorPaneUI());
+//        textPane2.setUI(new javax.swing.plaf.basic.BasicEditorPaneUI());
         textPane.setBackground(new Color(25,25,150));
         textPane.setCaretColor(new Color(0, 255, 255));
         textPane2.setBackground(new Color(25,25,150));
@@ -113,6 +126,8 @@ return retValue;
         edbug.setEditable(false);
         etzumba.setEditable(false); 
         Mpanel.setLayout(null);
+        Mpanel.setBackground(Color.white);
+        Mpanel2.setBackground(Color.white);
         Mpanel.add(mtzamba);
        mtzamba.setPreferredSize(new Dimension(34,28));
         mtzamba.setHorizontalAlignment(JTextField.CENTER);
@@ -205,6 +220,7 @@ return retValue;
         menuItem.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){
             textPane.undoManager.undo();textPane.search(true);
+            Codedit=true;
         }
         });
         menuItem = new JMenuItem("Redo");
@@ -214,6 +230,7 @@ return retValue;
         menuItem.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){
             textPane.undoManager.redo();textPane.search(true);
+            Codedit=true;
         }
         });
                 popmenu.addSeparator();
@@ -224,6 +241,7 @@ return retValue;
         menuItem.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){
             textPane.cut();
+            Codedit=true;
         }
         });
         menuItem = new JMenuItem("Copy");
@@ -243,6 +261,7 @@ return retValue;
         public void actionPerformed(ActionEvent e){
             textPane.paste();
         textPane.search(true);
+            Codedit=true;
         }
         });
                 popmenu.addSeparator();
@@ -253,6 +272,16 @@ return retValue;
         menuItem.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){
             textPane.selectAll();
+        }
+        });
+                    popmenu.addSeparator();
+        menuItem = new JMenuItem("Dar Formato");
+        popmenu.add(menuItem);
+        menuItem.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e){
+            textPane.setText(textPane.adjust(textPane.doc));
+            textPane.search(true);
+            Codedit=true;
         }
         });
         eSplitPane2= new JSplitPane(JSplitPane.VERTICAL_SPLIT,ejScrollPane2, edbug);
@@ -287,26 +316,30 @@ return retValue;
             @Override
             public void mouseReleased(MouseEvent evt) {
                world=null;
+            Mapedit=false;
                Mpanel.reset(mbarraH.getValue(), mbarraV.getValue());
-            Ventana2.Mpanel2.reset();
+            Ventana2.Mpanel2.reset(false);
             }
         });
         mGuardar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent evt) {
                 mGuardar();
+            Mapedit=false;
             }
         });
         mAbrir.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent evt) {
                 mAbrir();
+            Mapedit=false;
             }
         });
         mGuardarcomo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent evt) {
                 mGuardarComo();
+            Mapedit=false;
             }
         });
         Mpanel.addMouseWheelListener(new MouseWheelListener() {
@@ -320,7 +353,8 @@ return retValue;
             @Override
             public void mouseReleased(MouseEvent evt) {
                 mtzumba.setText("INFINITO");
-                Mpanel2.reset();
+                Mpanel2.reset(false);
+            Mapedit=true;
             }
         });
         mbarraH.addAdjustmentListener(new AdjustmentListener() {
@@ -363,24 +397,28 @@ return retValue;
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                cNuevo();
+            Codedit=false;
             }
         });
         cGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 cGuardar();
+            Codedit=false;
             }
         });
         cAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 cAbrir();
+            Codedit=false;
             }
         });
         cGuardarcomo.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 cGuardarComo();
+            Codedit=false;
             }
         });
 
@@ -399,8 +437,12 @@ return retValue;
         });
         textPane.addMouseListener(new MouseAdapter(){
             public void mouseReleased(MouseEvent Me){
+                
             if(!Me.isPopupTrigger()&&Me.getButton()==MouseEvent.BUTTON3){
             popmenu.show(Me.getComponent(), Me.getX(), Me.getY());
+            }
+            if(Me.getButton()==MouseEvent.BUTTON1){
+                textPane.setBreak(Me.getPoint());
             }
             }
             });
@@ -419,6 +461,7 @@ return retValue;
                 if(evt.getKeyCode()==KeyEvent.VK_V&&action)
                     paste=true;
                 
+            Codedit=true;
             }
             boolean paste=false;
             @Override
@@ -433,13 +476,13 @@ return retValue;
         eadelante.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                avanzauno();
+                Mpanel2.avanzauno();
             }
         });
         einiciar.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                Mpanel2.reset();
+                Mpanel2.reset(true);
             }
         });
         ecorrer.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -454,6 +497,7 @@ return retValue;
                 Mpanel2.stop();
             }
         });
+        
     }
     private void mtzamba(KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER)
@@ -467,7 +511,7 @@ return retValue;
             Mpanel.open(world);
         }
         Mpanel.savez(mbarraH.getValue(), mbarraV.getValue());
-            Ventana2.Mpanel2.reset();
+            Ventana2.Mpanel2.reset(false);
     }
     private void mGuardar() {
         if (world != null) {
@@ -524,9 +568,6 @@ return retValue;
             cGuardarComo();
         }
     }
-    private void avanzauno(){
-        System.out.println(program.nextAction());
-    }
     private void cCompila() {
         String contents="";
             try {
@@ -541,15 +582,16 @@ return retValue;
             parsedDoc = parser.parsedDoc.toArray(new String[0]);
             rows = parser.row.toArray(new Integer[0]);
             env = new EnvironmentK();
-            program = new Program(parsedDoc,rows,env);
-            System.out.println(contents);
+            for(int i = 0; i < parsedDoc.length; i++)
+                System.out.println(parsedDoc[i]);
             textPane2.setText(textPane.getText());
             textPane.search(true);
             textPane2.search(true);
-            Ventana2.Mpanel2.reset();
+            Ventana2.Mpanel2.reset(true);
+            Mpanel2.arranca();
             JOptionPane.showMessageDialog(this,"Programa Compilado","Karel",JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this,"Error de compilacion: " + ex.getMessage(),"Karel",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this,"Error de compilacion: " + ex.getMessage(),"Karel",JOptionPane.ERROR_MESSAGE);
         }
 //        textPane.setText(Compilador.adjust(textPane.doc));
         

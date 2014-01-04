@@ -36,36 +36,36 @@ class ProgramData {
         
     	/* Define action words as needed. */
 
-        new KeyWord( "MOVE"                         , SymbolsPascal.MOVE),
-        new KeyWord( "PICKBPR"                      , SymbolsPascal.PICKBPR),
-        new KeyWord( "PUTBPR"                       , SymbolsPascal.PUTBPR),
-        new KeyWord( "TURNLEFT"                     , SymbolsPascal.TURNLEFT),
-        new KeyWord( "TURNOFF"                      , SymbolsPascal.TURNOFF),
+        new KeyWord( "MOVE"                         , SymbolsProgram.MOVE),
+        new KeyWord( "PICKBPR"                      , SymbolsProgram.PICKBPR),
+        new KeyWord( "PUTBPR"                       , SymbolsProgram.PUTBPR),
+        new KeyWord( "TURNLEFT"                     , SymbolsProgram.TURNLEFT),
+        new KeyWord( "TURNOFF"                      , SymbolsProgram.TURNOFF),
     };
     
     protected static final KeyWord[] ConditionsArray = {
         
         /* Define conditional words as needed. */
         
-        new KeyWord( "CFCLEAR"                      , SymbolsPascal.CFCLEAR ),
-        new KeyWord( "CFBLOCK"                      , SymbolsPascal.CFBLOCK ),
-        new KeyWord( "CLCLEAR"                      , SymbolsPascal.CLCLEAR ),
-        new KeyWord( "CLBLOCK"                      , SymbolsPascal.CLBLOCK ),
-        new KeyWord( "CRCLEAR"                      , SymbolsPascal.CRCLEAR ),
-        new KeyWord( "CRBLOCK"                      , SymbolsPascal.CRBLOCK ),
-        new KeyWord( "NEXTB"                        , SymbolsPascal.NEXTB ),
-        new KeyWord( "NONEXTB"                      , SymbolsPascal.NONEXTB ),
-        new KeyWord( "ANYBBAG"                      , SymbolsPascal.ANYBBAG ),
-        new KeyWord( "NOBBAG"                       , SymbolsPascal.NOBBAG ),
-        new KeyWord( "FACINGN"                      , SymbolsPascal.FACINGN ),
-        new KeyWord( "FACINGS"                      , SymbolsPascal.FACINGS ),
-        new KeyWord( "FACINGE"                      , SymbolsPascal.FACINGE ),
-        new KeyWord( "FACINGW"                      , SymbolsPascal.FACINGW ),
-        new KeyWord( "NOFACINGN"                    , SymbolsPascal.NOFACINGN ),
-        new KeyWord( "NOFACINGS"                    , SymbolsPascal.NOFACINGS ),
-        new KeyWord( "NOFACINGE"                    , SymbolsPascal.NOFACINGE ),
-        new KeyWord( "NOFACINGW"                    , SymbolsPascal.NOFACINGW ),
-        new KeyWord( "IFZERO"                       , SymbolsPascal.IFZERO ),
+        new KeyWord( "CFCLEAR"                      , SymbolsProgram.CFCLEAR ),
+        new KeyWord( "CFBLOCK"                      , SymbolsProgram.CFBLOCK ),
+        new KeyWord( "CLCLEAR"                      , SymbolsProgram.CLCLEAR ),
+        new KeyWord( "CLBLOCK"                      , SymbolsProgram.CLBLOCK ),
+        new KeyWord( "CRCLEAR"                      , SymbolsProgram.CRCLEAR ),
+        new KeyWord( "CRBLOCK"                      , SymbolsProgram.CRBLOCK ),
+        new KeyWord( "NEXTB"                        , SymbolsProgram.NEXTB ),
+        new KeyWord( "NONEXTB"                      , SymbolsProgram.NONEXTB ),
+        new KeyWord( "ANYBBAG"                      , SymbolsProgram.ANYBBAG ),
+        new KeyWord( "NOBBAG"                       , SymbolsProgram.NOBBAG ),
+        new KeyWord( "FACINGN"                      , SymbolsProgram.FACINGN ),
+        new KeyWord( "FACINGS"                      , SymbolsProgram.FACINGS ),
+        new KeyWord( "FACINGE"                      , SymbolsProgram.FACINGE ),
+        new KeyWord( "FACINGW"                      , SymbolsProgram.FACINGW ),
+        new KeyWord( "NOFACINGN"                    , SymbolsProgram.NOFACINGN ),
+        new KeyWord( "NOFACINGS"                    , SymbolsProgram.NOFACINGS ),
+        new KeyWord( "NOFACINGE"                    , SymbolsProgram.NOFACINGE ),
+        new KeyWord( "NOFACINGW"                    , SymbolsProgram.NOFACINGW ),
+        new KeyWord( "IFZERO"                       , SymbolsProgram.IFZERO ),
 
     };
         

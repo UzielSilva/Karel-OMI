@@ -82,6 +82,7 @@ public class EditorMapas extends Mapas{
                 }
             }
         }
+            Ventana2.mtzumba.setText("0");
         savez(ScrlH, ScrlV);
     }
 
@@ -133,6 +134,6 @@ public class EditorMapas extends Mapas{
                 y = -1;
                 }
         }
-            Ventana2.Mpanel2.reset();
+            Ventana2.Mpanel2.reset(false);
     }
 }

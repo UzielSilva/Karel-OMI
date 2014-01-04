@@ -14,7 +14,7 @@ import javax.swing.text.*;
  * @author German gonzalez, Uziel Silva
  */
 public class VisorCodigo extends JTextPane  {
-
+    public static boolean breaak[]=new boolean[8000];
     public static Style style[]=new Style[7];
     private LexerPascal lx;
     private Reader read;
@@ -29,6 +29,7 @@ public class VisorCodigo extends JTextPane  {
     private void style(int i,String st,Color c,boolean underline){
         style[i] = this.addStyle(st, null);
         StyleConstants.setForeground(style[i], c);
+        StyleConstants.setBackground(style[i], new Color(25,25,150));
         StyleConstants.setBold(style[i], true);
         StyleConstants.setUnderline(style[i], underline);
     }
@@ -37,6 +38,7 @@ public class VisorCodigo extends JTextPane  {
         this.setText(" ");
         this.setForeground(new Color(255,255,50));
         doc = this.getStyledDocument();
+       
         style(0,"red",new Color(255,100,100),false);
         style(1,"Black",new Color(255,255,50),false);
         style(2,"orange",new Color(255, 210, 0),false);
@@ -50,7 +52,9 @@ public class VisorCodigo extends JTextPane  {
     }
 
 
-
+public int getcaret(){
+    return this.getCaret().getDot();
+}
     public void search(boolean full) {
         canremember = false;
         this.setParagraphAttributes(style[6], false);
@@ -136,6 +140,7 @@ public class VisorCodigo extends JTextPane  {
             // default to text display
             return new LabelView(elem);
         }
+        
     }
 
     final class NumberedParagraphViews extends ParagraphView {
@@ -171,9 +176,16 @@ public class VisorCodigo extends JTextPane  {
             g2.fillRect(numberX, numberY - 12, NUMBERS_WIDTH - 2, r.height + 1);
             g2.setColor(Color.LIGHT_GRAY);
             g2.drawLine(numberX + NUMBERS_WIDTH - 2, numberY - 12, numberX + NUMBERS_WIDTH - 2, numberY - 12 + r.height + 1);
-            g2.setColor(Color.black);
+                   
+            if(previousLineCount + n <8000)
+            if(breaak[previousLineCount + n ]){
+                g2.setColor(Color.red);
+                g2.fillOval(numberX+2, numberY-9, 12, 12);
+            } 
+            g2.setColor(Color.black); 
             g2.setFont(new Font("monospaced", 12, 12));
             g2.drawString((previousLineCount + n + 1) + "", numberX + 30 - (((previousLineCount + n + 1) + "").length() * 7), numberY);
+
             if(hightlight==true && line == previousLineCount + n + 1){
                 g2.setColor(Color.yellow);
                 g2.setXORMode(Color.black);
@@ -195,5 +207,6 @@ public class VisorCodigo extends JTextPane  {
             }
             return lineCount;
         }
+        
     }
 }

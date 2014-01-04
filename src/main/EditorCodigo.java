@@ -16,10 +16,10 @@ public class EditorCodigo extends VisorCodigo implements Runnable {
 
     protected UndoManager undoManager = new UndoManager();
     private Thread d=new Thread(this);
-    private Caret caret = getCaret();
     private JViewport viewport ;
     private Point startPoint ;
     private Dimension size ;
+    public static String lines[];
     private Point endPoint ;
     private int time = -1;
     
@@ -75,13 +75,24 @@ boolean paste=false;
 
     public void caret() {
         try {
-            int pos = caret.getDot();
+            int pos = this.getcaret();
             int x = (((this.modelToView(pos).x) - 37) / 8) + 1;
             int y = (((this.modelToView(pos).y) - 1) / h) + 1;
             Ventana2.clpos.setText("linea: " + y + ", columa: " + x);
         } catch (Exception e) {
         }
     }
+        public void setBreak(Point m){
+        try {
+            int pos = this.getcaret();
+            if  (m.x<35){
+                breaak[(((this.modelToView(pos).y) - 1) / h) +1]=!breaak[(((this.modelToView(pos).y) - 1) / h)+1];
+                repaint();
+            }
+        } catch (BadLocationException ex) {
+            Logger.getLogger(EditorCodigo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
 
     @Override
     public void run() {
@@ -90,7 +101,7 @@ boolean paste=false;
             Lib.pause(15);
         }
         time = -1;
-            int pos = caret.getDot();
+            int pos = this.getcaret();
             viewport = Ventana2.cjScrollPane.getViewport();
         try {
             startPoint=new Point(0,this.modelToView(pos).y);
@@ -106,5 +117,72 @@ boolean paste=false;
         search(paste);
         paste=false;
     }
+    
+    public static String adjust(Document doc) {
+        try {
+            String document = doc.getText(0, doc.getLength()).toLowerCase();
+            while (document.contains("( ")) {
+                document = document.replace("( ", "(");
+            }
+                document = document.replace("(", " (");
+            while (document.contains(" )")) {
+                document = document.replace(" )", ")");
+            }
+            for (String s : new String[]{"\n", "|", "  "})
+                while (document.contains(s)) {
+                    document = document.replace(s, " ");
+                }
+            while (document.contains(";;")) {
+                document = document.replace(";;", ";");
+            }
+            for (String s : new String[]{";", "iniciar-programa", "termina-ejecucion", "inicia-ejecucion", "finalizar-programa"}) {
+                document = document.replace(s + " ", s);
+                document = document.replace(s, s + "\n");
+            }
+            for (String s : new String[]{"hacer", "como", "entonces", "veces", "inicio"}) {
+                document = document.replace(s + " ", s + "\n");
+                document = document.replace(s + "\ninicio ", s + "\ninicio");
+                document = document.replace(s + "\ninicio", s + " inicio\n");
+            }
 
+            lines = document.split("\n");
+
+            marca(0, 0);
+            document = "";
+            for (String s : lines)
+                document += s + "\n";
+            return document;
+        } catch (BadLocationException ex) {}
+        return null;
+    }
+
+    private static String spaces(int e) {
+        String str = "";
+        for (int i = 0; i < e; i++)
+            str += "   ";
+        return str;
+    }
+    private static int submarca(int line, int e) {
+        if (lines[line].endsWith("fin sino inicio"))
+            lines[line] = spaces(e - 1) + lines[line++];
+        lines[line] = spaces(e) + lines[line];
+        if (lines[line].endsWith("inicio") || lines[line].endsWith("iniciar-programa") || lines[line].endsWith("inicia-ejecucion")) {
+            line = marca(line + 1, e + 1);
+        } else if (lines[line].endsWith("veces") || lines[line].endsWith("hacer") || lines[line].endsWith("como")
+                || lines[line].endsWith("entonces")) {
+            line = submarca(line + 1, e + 1);
+        } else line++;
+        return line;
+    }
+
+    private static int marca(int line, int e) {
+        while (line < lines.length) {
+            if (lines[line].contains("fin;") || lines[line].contains("termina-ejecucion") || lines[line].contains("finalizar-programa"))
+                break;
+            line = submarca(line, e);
+        }
+        if (line < lines.length)
+            lines[line] = spaces(e - 1) + lines[line];
+        return line + 1;
+    }
 }

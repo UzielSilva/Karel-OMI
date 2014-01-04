@@ -19,6 +19,10 @@ public class Program {
     private Integer[] LineList;
     
     private Integer Counter;
+
+    private Integer IterVal;
+    
+    private Stack<Integer> IterStack;
     
     private Stack<Integer> Parameter;
     
@@ -31,26 +35,29 @@ public class Program {
     public Program(String[] s, Integer[] i, EnvironmentK e){
         Dirs = new Stack();
         Parameter = new Stack();
+        IterStack = new Stack();
         LineList = i;
         CommandList = s; 
-        Counter = LineList[0];
+        Counter = Integer.parseInt(CommandList[0]);
         Env = e;
         TurnedOn = true;
+        IterVal = 0;
     }
     
     public Program(String[] s, EnvironmentK e){
         Dirs = new Stack();
         Parameter = new Stack();
+        IterStack = new Stack();
         CommandList = s;
-        Counter = LineList[0];
+        Counter = Integer.parseInt(CommandList[0]);
         Env = e;
         TurnedOn = true;
-
+        IterVal = 0;
     }
     
     public Integer getCurrentLine(){
-        if(LineList == null) return null;
-        else return LineList[Counter];
+        if(LineList == null || !TurnedOn) return null;
+        else return LineList[Counter] + 1;
     }
     
     public Integer nextAction(){
@@ -66,34 +73,53 @@ public class Program {
         if(ProgramBox.isCondition(state)){
             if(executeConditional(state,true,0)){
                 Counter += 2;
-                return nextAction();
+                return null;
             }else{
                 Counter = Integer.parseInt(CommandList[Counter+1]);
-                return nextAction();
+                return null;
+            }
+        }
+        if(SymbolsProgram.ITERATE == state){
+            Integer initialState = Counter - 1;
+            if(IterVal < executeNumber()){
+                Parameter.push(Parameter.peek());
+                Dirs.push(initialState);
+                IterStack.push(IterVal+1);
+                IterVal = 0;
+                Counter++;
+                return null;
+            }
+            else{
+                Counter = Integer.parseInt(CommandList[Counter]);
+                IterVal = 0;
+                return null;
             }
         }
         if(SymbolsProgram.BRANCH == state){
             Counter = Integer.parseInt(CommandList[Counter]);
-            return nextAction();
+            return null;
         }
         if(SymbolsProgram.CALL == state){
             Dirs.push(Counter + 1);
             Parameter.push(0);
+            IterStack.push(0);
             Counter = Integer.parseInt(CommandList[Counter]);
-            return nextAction();
+            return null;
         }
         if(SymbolsProgram.PARAMCALL == state){
             Integer i = Integer.parseInt(CommandList[Counter]);
             Dirs.push(Counter + 2);
             Counter++;
             Parameter.push(executeNumber());
+            IterStack.push(0);
             Counter = i;
-            return nextAction();
+            return null;
         }
         if(SymbolsProgram.RETURN == state){
             Counter = Dirs.pop();
             Parameter.pop();
-            return nextAction();
+            IterVal = IterStack.pop();
+            return null;
         }
         return null;
     }
@@ -107,26 +133,26 @@ public class Program {
         
         switch(state){
             
-            case SymbolsProgram.CFCLEAR: Counter++; b = Env.isFrontClear(); break;
-            case SymbolsProgram.CFBLOCK: Counter++; b = !Env.isFrontClear(); break;
-            case SymbolsProgram.CLCLEAR: Counter++; b = Env.isLeftClear(); break;
-            case SymbolsProgram.CLBLOCK: Counter++; b = !Env.isLeftClear(); break;
-            case SymbolsProgram.CRCLEAR: Counter++; b = Env.isRightClear(); break;
-            case SymbolsProgram.CRBLOCK: Counter++; b = !Env.isRightClear(); break;
-            case SymbolsProgram.NEXTB: Counter++; b = Env.isNextToABeeper(); break;
-            case SymbolsProgram.NONEXTB: Counter++; b = !Env.isNextToABeeper(); break;
-            case SymbolsProgram.ANYBBAG: Counter++; b = Env.isThereAnyBeepersInBag(); break;
-            case SymbolsProgram.NOBBAG: Counter++; b = !Env.isThereAnyBeepersInBag(); break;
-            case SymbolsProgram.FACINGN: Counter++; b = Env.isFacingNorth(); break;
-            case SymbolsProgram.FACINGS: Counter++; b = Env.isFacingSouth(); break;
-            case SymbolsProgram.FACINGE: Counter++; b = Env.isFacingEast(); break;
-            case SymbolsProgram.FACINGW: Counter++; b = Env.isFacingWest(); break;
-            case SymbolsProgram.NOFACINGN: Counter++; b = !Env.isFacingNorth(); break;
-            case SymbolsProgram.NOFACINGS: Counter++; b = !Env.isFacingSouth(); break;
-            case SymbolsProgram.NOFACINGE: Counter++; b = !Env.isFacingEast(); break;
-            case SymbolsProgram.NOFACINGW: Counter++; b = !Env.isFacingWest(); break;
+            case SymbolsProgram.CFCLEAR: b = Env.isFrontClear(); break;
+            case SymbolsProgram.CFBLOCK: b = !Env.isFrontClear(); break;
+            case SymbolsProgram.CLCLEAR: b = Env.isLeftClear(); break;
+            case SymbolsProgram.CLBLOCK: b = !Env.isLeftClear(); break;
+            case SymbolsProgram.CRCLEAR: b = Env.isRightClear(); break;
+            case SymbolsProgram.CRBLOCK: b = !Env.isRightClear(); break;
+            case SymbolsProgram.NEXTB: b = Env.isNextToABeeper(); break;
+            case SymbolsProgram.NONEXTB: b = !Env.isNextToABeeper(); break;
+            case SymbolsProgram.ANYBBAG: b = Env.isThereAnyBeepersInBag(); break;
+            case SymbolsProgram.NOBBAG: b = !Env.isThereAnyBeepersInBag(); break;
+            case SymbolsProgram.FACINGN: b = Env.isFacingNorth(); break;
+            case SymbolsProgram.FACINGS: b = Env.isFacingSouth(); break;
+            case SymbolsProgram.FACINGE: b = Env.isFacingEast(); break;
+            case SymbolsProgram.FACINGW: b = Env.isFacingWest(); break;
+            case SymbolsProgram.NOFACINGN: b = !Env.isFacingNorth(); break;
+            case SymbolsProgram.NOFACINGS: b = !Env.isFacingSouth(); break;
+            case SymbolsProgram.NOFACINGE: b = !Env.isFacingEast(); break;
+            case SymbolsProgram.NOFACINGW: b = !Env.isFacingWest(); break;
                 
-            case SymbolsPascal.IFZERO: Counter++; b = (executeNumber() == 0); break;
+            case SymbolsPascal.IFZERO: b = (executeNumber() == 0); break;
 
         }
         
@@ -151,8 +177,10 @@ public class Program {
         Integer i = ProgramBox.gets(CommandList[Counter]);
         if(i == null)
             return Integer.parseInt(CommandList[Counter++]);
-        if(i == SymbolsProgram.PARAM)
+        if(i == SymbolsProgram.PARAM){
+            Counter++;
             return Parameter.peek();
+        }
         if(i == SymbolsProgram.PRED){
             Counter++;
             return (executeNumber() - 1);
