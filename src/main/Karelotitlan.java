@@ -11,7 +11,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Karelotitlan{ 
     public static void main(String[] args) {
         
-        JFrame.setDefaultLookAndFeelDecorated(true);
        Ventana2 v=new Ventana2();
        v.setVisible(true);
     }

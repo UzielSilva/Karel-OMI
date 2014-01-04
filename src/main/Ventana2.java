@@ -113,9 +113,7 @@ addWindowListener(new WindowAdapter(){
         ejScrollPane2.setViewportView(textPane2);
         cjScrollPane.setBorder(null);
         ejScrollPane2.setBorder(null);
-//        textPane.setUI(new javax.swing.plaf.basic.BasicEditorPaneUI());
-//        textPane2.setUI(new javax.swing.plaf.basic.BasicEditorPaneUI());
-        textPane.setBackground(new Color(25,25,150));
+       textPane.setBackground(new Color(25,25,150));
         textPane.setCaretColor(new Color(0, 255, 255));
         textPane2.setBackground(new Color(25,25,150));
         textPane.setSelectionColor(Color.blue);
@@ -181,7 +179,7 @@ addWindowListener(new WindowAdapter(){
         Container c5=new Container();
         c5.setLayout(new BorderLayout());
         c5.add(c44,BorderLayout.NORTH);
-        cjScrollPane.setBorder(BorderFactory.createLineBorder(Color.black));
+        textPane.setBorder(BorderFactory.createLineBorder(Color.black));
         c5.add(cjScrollPane,BorderLayout.CENTER);
                     tabpanel.addTab("Programa", c5);
 
@@ -438,7 +436,7 @@ addWindowListener(new WindowAdapter(){
         textPane.addMouseListener(new MouseAdapter(){
             public void mouseReleased(MouseEvent Me){
                 
-            if(!Me.isPopupTrigger()&&Me.getButton()==MouseEvent.BUTTON3){
+            if(Me.getButton()==MouseEvent.BUTTON3){
             popmenu.show(Me.getComponent(), Me.getX(), Me.getY());
             }
             if(Me.getButton()==MouseEvent.BUTTON1){

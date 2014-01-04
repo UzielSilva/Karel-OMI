@@ -6,6 +6,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -81,24 +83,25 @@ public int getcaret(){
                     if(n==2)
                         doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("Black"), true);
                     if(n>=3&&n<=4)
-                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("red"), true);
+                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("orange"), true);
                     if(n>=5&&n<=25)
                         doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("cyan"), true);
                     if(n>=26&&n<=30)
                         doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("green"), true);
-                    if(n>=31&&n<=48)
+                    if(n>=31&&n<=49)
                         doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("orange"), true);
                     index+=PascalBox.getType(n).length();
                     }
-                    if(n==1){
-                        doc.setCharacterAttributes(start , curline.length(), this.getStyle("error"), true);
-                    }
-                    if(n==49||n==50){
+//                    if(n==1){
+//                        doc.setCharacterAttributes(start , curline.length(), this.getStyle("error"), true);
+//                    }
+                    if(n==50||n==51){
                         doc.setCharacterAttributes(start +index, curline.length()-index, this.getStyle("red"), true);
                     }
                 }
-            } catch (IOException ex) {
-            }
+            } catch (Exception ex) {
+                Logger.getLogger(VisorCodigo.class.getName()).log(Level.SEVERE, null, ex);
+            } 
             start += curline.length() + 1;
         }
         canremember = true;

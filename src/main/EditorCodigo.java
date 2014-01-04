@@ -16,6 +16,7 @@ public class EditorCodigo extends VisorCodigo implements Runnable {
 
     protected UndoManager undoManager = new UndoManager();
     private Thread d=new Thread(this);
+    private Caret caret = getCaret();
     private JViewport viewport ;
     private Point startPoint ;
     private Dimension size ;
@@ -75,18 +76,31 @@ boolean paste=false;
 
     public void caret() {
         try {
-            int pos = this.getcaret();
+            content = "";
+            viewport = Ventana2.cjScrollPane.getViewport();
+            startPoint = viewport.getViewPosition();
+            size = viewport.getExtentSize();
+            endPoint = new Point(startPoint.x + size.width, startPoint.y + size.height);
+            start = this.viewToModel(startPoint);
+            end = this.viewToModel(endPoint);
+            content = doc.getText(start, end - start).toLowerCase();
+        } catch (BadLocationException e) {
+        }
+
+        try {
+            int pos = caret.getDot();
             int x = (((this.modelToView(pos).x) - 37) / 8) + 1;
             int y = (((this.modelToView(pos).y) - 1) / h) + 1;
             Ventana2.clpos.setText("linea: " + y + ", columa: " + x);
         } catch (Exception e) {
         }
     }
+
         public void setBreak(Point m){
         try {
-            int pos = this.getcaret();
+            int pos = caret.getDot();
             if  (m.x<35){
-                breaak[(((this.modelToView(pos).y) - 1) / h) +1]=!breaak[(((this.modelToView(pos).y) - 1) / h)+1];
+                breaak[(((this.modelToView(pos).y) - 1) / h) ]=!breaak[(((this.modelToView(pos).y) - 1) / h)];
                 repaint();
             }
         } catch (BadLocationException ex) {
@@ -101,7 +115,7 @@ boolean paste=false;
             Lib.pause(15);
         }
         time = -1;
-            int pos = this.getcaret();
+            int pos = caret.getDot();
             viewport = Ventana2.cjScrollPane.getViewport();
         try {
             startPoint=new Point(0,this.modelToView(pos).y);
