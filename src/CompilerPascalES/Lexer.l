@@ -27,6 +27,7 @@ import java.awt.Point;
 %column
 %cup
 %char
+%scanerror java.lang.Exception
 
 /* Instruction names */
 
@@ -63,8 +64,6 @@ Word = 			[a-zA-Z][a-zA-Z0-9\-]*
 [\t\n ] {}
 
 . {
-	System.err.println("Invalid token: \"" + yytext() + "\" at line: " + yyline);
-	return symbol(SymbolsPascal.error,yytext());
-	// Manual adjust EOF symbol in generated java
+	throw new java.lang.Exception("Invalid token: \"" + yytext() + "\" at line: " + (yyline + 1));
 }
 

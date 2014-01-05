@@ -354,7 +354,7 @@ public class ParserPascal extends java_cup.runtime.lr_parser {
             String s = PascalBox.getType(cur_token.sym);
             if(cur_token.left == -1)
                 throw new java.lang.Exception("Syntax error: Unexpected EOF.");
-            throw new java.lang.Exception("Syntax error: Unexpected " + s + " at line: " + cur_token.left + ".");
+            throw new java.lang.Exception("Syntax error: Unexpected " + s + " at line: " + (cur_token.left +1) + ".");
 
         }
     }
@@ -362,7 +362,7 @@ public class ParserPascal extends java_cup.runtime.lr_parser {
     public void syntax_error(Symbol cur_token) {
         if(cur_token.sym != 1){
             String s = PascalBox.getType(cur_token.sym);
-            report_error("Syntax error: Unexpected " + s + " at line: " + cur_token.left + ".",cur_token);
+            report_error("Syntax error: Unexpected " + s + " at line: " + (cur_token.left +1) + ".",cur_token);
 
         }
     }
@@ -372,8 +372,8 @@ public class ParserPascal extends java_cup.runtime.lr_parser {
     }
 
     public void report_error(String message, Object info){
-        String s = info.toString();
-        errors += ("Error: " + message + " In line: " + s + "\n");
+        Integer s = Integer.parseInt(info.toString());
+        errors += ("Error: " + message + " In line: " + (s+1) + "\n");
     }
 
     public static void main(String args[]) throws Exception 
