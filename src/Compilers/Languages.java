@@ -6,7 +6,7 @@
 
 package Compilers;
 
-import Compilers.Pascal.Languaje.*;
+import Compilers.Pascal.Language.*;
 
 /**
  *

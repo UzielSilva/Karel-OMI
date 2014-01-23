@@ -1,4 +1,4 @@
-package Compilers.Pascal.Languaje;
+package Compilers.Pascal.Language;
 
 import Compilers.KeyWord;
 import Compilers.Pascal.Symbols;
