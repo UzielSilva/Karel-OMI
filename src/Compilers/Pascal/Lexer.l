@@ -1,6 +1,7 @@
-package CompilerPascalES;
+package Compilers.Pascal;
 
 import java_cup.runtime.*;
+import Compilers.Box;
 import java.util.*;
 import java.io.*;
 import java.awt.Point;
@@ -13,14 +14,22 @@ import java.awt.Point;
 	private Symbol symbol(int type, Object value) {
     	return new Symbol(type, yyline, yycolumn, value);
   	}
+    public void setLanguage(Box.Language lang) {
+                Language = new Box(lang);
+  	}
+    private Box Language;
 
+    public static void main(String[] args) {
+    	Scanner in = net Scanner(System.in);
+    	Lexer l =
+    }
 %}
 
 %init{
-
+        Language = new Box(Box.ES);
 %init}
 
-%class LexerPascal
+%class Lexer
 %public
 %ignorecase
 %line
@@ -29,6 +38,8 @@ import java.awt.Point;
 %char
 %scanerror java.lang.Exception
 
+%state COMMENT
+
 /* Instruction names */
 
 Semicolon = 	";"
@@ -36,29 +47,36 @@ LeftParent = 	"("
 RightParent =	")"
 Number =		[0-9]+
 Word = 			[a-zA-Z][a-zA-Z0-9\-]*
+LineComment = "//"
+PLeftComment =  "(*"
+PRightComment = "*)"
+JLeftComment = "/*"
+JRightComment = "*/"
+KLeftComment =  "{"
+KRightComment = "}"
 %%
 
 {Word} {
-	Integer k = (PascalBox.gets(yytext()));
+	Integer k = (Language.gets(yytext()));
 	if (k != null) 
 		return symbol(k);
-	return symbol(SymbolsPascal.NAME,yytext());
+	return symbol(Symbols.NAME,yytext());
 }
 
 {Number} {
-	return symbol(SymbolsPascal.NUMBER,Integer.parseInt(yytext()));
+	return symbol(Symbols.NUMBER,Integer.parseInt(yytext()));
 }
 
 {Semicolon} {
-	return symbol(SymbolsPascal.SEMICOL);
+	return symbol(Symbols.SEMICOL);
 }
 
 {LeftParent} {
-	return symbol(SymbolsPascal.LPAREN);
+	return symbol(Symbols.LPAREN);
 }
 
 {RightParent} {
-	return symbol(SymbolsPascal.RPAREN);
+	return symbol(Symbols.RPAREN);
 }
 
 [\t\n ] {}

@@ -1,9 +1,10 @@
 package main;
 
-import CompilerPascalES.EnvironmentK;
-import CompilerPascalES.LexerPascal;
-import CompilerPascalES.ParserPascal;
-import CompilerPascalES.Program;
+import Compilers.Box;
+import Compilers.Program.EnvironmentK;
+import Compilers.Pascal.Lexer;
+import Compilers.Pascal.Parser;
+import Compilers.Program.Program;
 import com.apple.eawt.Application;
 import java.awt.*;
 import java.awt.event.*;
@@ -31,6 +32,7 @@ public class Ventana2 extends JFrame {
     public static Integer[] rows;
     public static EnvironmentK env;
     public static Program program;
+    public static Box.Language lang = Box.ES;
     
     public static EditorMapas Mpanel= new EditorMapas();
     public static VisorMapas Mpanel2=new VisorMapas();
@@ -573,8 +575,10 @@ addWindowListener(new WindowAdapter(){
             } catch (BadLocationException e) {
             }
       Reader read=new StringReader(contents);
-        LexerPascal lexer=new LexerPascal(read);
-        ParserPascal parser = new ParserPascal(lexer);
+        Lexer lexer=new Lexer(read);
+        lexer.setLanguage(lang);
+        Parser parser = new Parser(lexer);
+        parser.setLanguage(lang);
         try {
             parser.parse();
             parsedDoc = parser.parsedDoc.toArray(new String[0]);

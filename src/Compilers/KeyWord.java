@@ -1,6 +1,6 @@
-package CompilerPascalES;
+package Compilers;
 
-class KeyWord {
+public class KeyWord {
 
     private final String Key;
     private final Integer Obj;

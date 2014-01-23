@@ -1,7 +1,7 @@
 package main;
 
-import CompilerPascalES.LexerPascal;
-import CompilerPascalES.PascalBox;
+import Compilers.Pascal.Lexer;
+import Compilers.Box;
 import java.awt.*;
 import java.io.IOException;
 import java.io.Reader;
@@ -18,7 +18,7 @@ import javax.swing.text.*;
 public class VisorCodigo extends JTextPane  {
     public static boolean breaak[]=new boolean[8000];
     public static Style style[]=new Style[7];
-    private LexerPascal lx;
+    private Lexer lx;
     private Reader read;
     public boolean canremember = true;
     public boolean hightlight = false;
@@ -72,25 +72,26 @@ public int getcaret(){
         }
         for (String curline : contents) {
             read =new StringReader(curline);
-        lx=new LexerPascal(read);
+        lx=new Lexer(read);
+        lx.setLanguage(Ventana2.lang);
             try {
                 int n=0;
                 Symbol sym;
                     int index=0;
                 while((n=(sym=lx.next_token()).sym)!=0){ 
                     if(n>=2&&n<=48){
-                    index=curline.indexOf(PascalBox.getType(n),index);
+                    index=curline.indexOf(lx.getBox().getType(n),index);
                     if(n==2)
-                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("Black"), true);
+                        doc.setCharacterAttributes(start +index, lx.getBox().getType(n).length(), this.getStyle("Black"), true);
                     if(n>=3&&n<=4)
-                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("orange"), true);
+                        doc.setCharacterAttributes(start +index, lx.getBox().getType(n).length(), this.getStyle("orange"), true);
                     if(n>=5&&n<=25)
-                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("cyan"), true);
+                        doc.setCharacterAttributes(start +index, lx.getBox().getType(n).length(), this.getStyle("cyan"), true);
                     if(n>=26&&n<=30)
-                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("green"), true);
+                        doc.setCharacterAttributes(start +index, lx.getBox().getType(n).length(), this.getStyle("green"), true);
                     if(n>=31&&n<=49)
-                        doc.setCharacterAttributes(start +index, PascalBox.getType(n).length(), this.getStyle("orange"), true);
-                    index+=PascalBox.getType(n).length();
+                        doc.setCharacterAttributes(start +index, lx.getBox().getType(n).length(), this.getStyle("orange"), true);
+                    index+=lx.getBox().getType(n).length();
                     }
 //                    if(n==1){
 //                        doc.setCharacterAttributes(start , curline.length(), this.getStyle("error"), true);

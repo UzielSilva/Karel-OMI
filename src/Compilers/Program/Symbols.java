@@ -4,10 +4,10 @@
 // Thu Jan 02 01:08:45 CST 2014
 //----------------------------------------------------
 
-package CompilerPascalES;
+package Compilers.Program;
 
 /** CUP generated class containing symbol constants. */
-public class SymbolsProgram {
+public class Symbols {
   /* terminals */
   public static final int CFCLEAR = 1;
   public static final int PRED = 2;

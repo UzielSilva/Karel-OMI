@@ -1,18 +1,19 @@
-package CompilerPascalES;
+package Compilers.Program;
 
+import Compilers.KeyWord;
 import java.util.HashMap;
 
-public class ProgramBox {
+public class Box {
     
     private static HashMap<String,Integer> KeysTable;
     private static HashMap<String,Integer> ActionsTable;
     private static HashMap<String,Integer> ConditionsTable;
     
-    private static final KeyWord[] KeysArray = ProgramData.KeysArray;
-    private static final KeyWord[] ActionsArray = ProgramData.ActionsArray;
-    private static final KeyWord[] ConditionsArray = ProgramData.ConditionsArray;
+    private static final KeyWord[] KeysArray = Data.KeysArray;
+    private static final KeyWord[] ActionsArray = Data.ActionsArray;
+    private static final KeyWord[] ConditionsArray = Data.ConditionsArray;
 
-    public ProgramBox(KeyWord k, Integer t){
+    public Box(KeyWord k, Integer t){
         switch(t){
             
             case 0: KeysTable.put(k.getKey(), k.getObj()); break;
@@ -25,13 +26,13 @@ public class ProgramBox {
     static {
         KeysTable = new HashMap();
             for(KeyWord k : KeysArray)
-                new ProgramBox(k,0);
+                new Box(k,0);
         ActionsTable = new HashMap();
             for(KeyWord k : ActionsArray)
-                new ProgramBox(k,1);
+                new Box(k,1);
         ConditionsTable = new HashMap();
             for(KeyWord k : ConditionsArray)
-                new ProgramBox(k,2);
+                new Box(k,2);
     }
     
     public static Integer gets(String str){

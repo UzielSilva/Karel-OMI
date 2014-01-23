@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package CompilerPascalES;
+package Compilers.Program;
 
 import main.EditorMapas;
 import main.Lib;

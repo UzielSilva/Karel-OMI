@@ -1,6 +1,6 @@
 package main;
 
-import CompilerPascalES.Program;
+import Compilers.Program.Program;
 import javax.swing.JOptionPane;
 /**
  * @author German gonzalez, Uziel Silva
