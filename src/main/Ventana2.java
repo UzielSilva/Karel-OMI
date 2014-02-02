@@ -19,7 +19,7 @@ import javax.swing.undo.UndoManager;
 /**
  * @author German Gonzalez
  */
-public class Ventana2 extends JFrame {
+public class Ventana2 extends javax.swing.JApplet {
 
     boolean action = false;
     private boolean Mapedit=false;
@@ -74,43 +74,11 @@ public class Ventana2 extends JFrame {
     public static JScrollPane cjScrollPane= new JScrollPane();
     public JScrollPane ejScrollPane2= new JScrollPane(textPane2);
 
-    public Ventana2(){
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("KAREL OMI por German Gonzalez y Uziel Silva");
+  public void init() {
+    initComponents();
+  }
+    public void initComponents(){
         setMinimumSize(new Dimension(660, 380));
-addWindowListener(new WindowAdapter(){
-	public void windowClosing(WindowEvent we){
-            boolean close=false;
-            if(Mapedit){
-		int eleccion = JOptionPane.showConfirmDialog(null, "Hay cambios sin guardar en el mapa, desea guardar los cambios?");
-		if ( eleccion == 1) {
-                    close=true;
-		}			
-                if ( eleccion == 0) {
-                    mGuardar();
-		}
-            }
-            if(Codedit){
-		int eleccion = JOptionPane.showConfirmDialog(null, "Hay cambios sin guardar en el código, desea guardar los cambios?");
-		if ( eleccion == 1) {
-                    close=true;
-		}			
-                if ( eleccion == 0) {
-                    cGuardar();
-		}
-            }
-                if(close || (!Mapedit&&!Codedit))
-                System.exit(0);
-                      
-	}
-});
-    Image image = Toolkit.getDefaultToolkit().getImage(Ventana2.class.getResource ("Logo.png"));
-    this.setIconImage(image);
-        try {
-            Application application = Application.getApplication();
-            application.setDockIconImage(image);
-        } catch (Exception e) {
-        }
         cjScrollPane.setViewportView(textPane);
         ejScrollPane2.setViewportView(textPane2);
         cjScrollPane.setBorder(null);
@@ -300,7 +268,6 @@ addWindowListener(new WindowAdapter(){
         } catch (IOException ex) {}
         this.add(tabpanel);
                Mpanel.reset(mbarraH.getValue(), mbarraV.getValue());
-        this.pack();
         help.addHyperlinkListener(new HyperlinkListener() {
             @Override
             public void hyperlinkUpdate(HyperlinkEvent event) {
