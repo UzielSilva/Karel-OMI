@@ -52,7 +52,7 @@ public class KeysES{
         new KeyWord( "izquierda-libre"              , Symbols.CLCLEAR ),
         new KeyWord( "izquierda-bloqueada"          , Symbols.CLBLOCK ),
         new KeyWord( "derecha-libre"                , Symbols.CRCLEAR ),
-        new KeyWord( "detecha-bloqueada"            , Symbols.CRBLOCK ),
+        new KeyWord( "derecha-bloqueada"            , Symbols.CRBLOCK ),
         new KeyWord( "junto-a-zumbador"             , Symbols.NEXTB ),
         new KeyWord( "no-junto-a-zumbador"          , Symbols.NONEXTB ),
         new KeyWord( "algun-zumbador-en-la-mochila" , Symbols.ANYBBAG ),
