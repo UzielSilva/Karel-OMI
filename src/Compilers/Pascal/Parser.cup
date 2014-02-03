@@ -83,6 +83,9 @@ init with {:
 
 scan with {:
     Symbol s = getScanner().next_token();
+    while(s.sym == Symbols.COMMENT){
+        s = getScanner().next_token();
+    }
     // System.out.println(s.sym);
     return s;
 :};
@@ -111,7 +114,7 @@ terminal String
                 FACINGE,            FACINGW,            NOFACINGN,          NOFACINGS,
                 NOFACINGE,          NOFACINGW,          IFZERO,
 
-                NAME;
+                NAME,               COMMENT;
 
 terminal Integer 
 
