@@ -37,6 +37,9 @@ import java.awt.Point;
 %scanerror java.lang.Exception
 
 %state LINECOMMENT
+%state PASCALCOMMENT
+%state JAVACOMMENT
+%state KEYCOMMENT
 
 /* Instruction names */
 
@@ -57,6 +60,22 @@ KRightComment = "}"
 <YYINITIAL> {
     {LineComment} { 
         yybegin(LINECOMMENT);
+        return symbol(Symbols.COMMENT);
+    }
+    
+    {PLeftComment} { 
+        yybegin(PASCALCOMMENT);
+        return symbol(Symbols.COMMENT);
+    }
+    
+    {JLeftComment} { 
+        yybegin(JAVACOMMENT);
+        return symbol(Symbols.COMMENT);
+    }
+    
+    {KLeftComment} { 
+        yybegin(KEYCOMMENT);
+        return symbol(Symbols.COMMENT);
     }
     
     {Word} {
@@ -98,6 +117,61 @@ KRightComment = "}"
     
 }
 
+<PASCALCOMMENT> {
+    .*{PRightComment} {
+        yybegin(YYINITIAL);
+        return symbol(Symbols.COMMENT);
+    }
+    .*\n {
+        return symbol(Symbols.COMMENT);
+    }
+    <<EOF>> {
+        throw new java.lang.Exception("Unclosed comment. Unexpected EOF.");
+    }
+    .* {
+        return symbol(Symbols.COMMENT);
+    }
+    
+}
+
+<JAVACOMMENT> {
+    .*{JRightComment} {
+        yybegin(YYINITIAL);
+        return symbol(Symbols.COMMENT);
+    }
+    .*\n {
+        return symbol(Symbols.COMMENT);
+    }
+    <<EOF>> {
+        throw new java.lang.Exception("Unclosed comment. Unexpected EOF.");
+    }
+    .* {
+        return symbol(Symbols.COMMENT);
+    }
+    
+}
+
+<KEYCOMMENT> {
+    .*{KRightComment} {
+        yybegin(YYINITIAL);
+        return symbol(Symbols.COMMENT);
+    }
+    .*\n {
+        return symbol(Symbols.COMMENT);
+    }
+    <<EOF>> {
+        throw new java.lang.Exception("Unclosed comment. Unexpected EOF.");
+    }
+    .* {
+        return symbol(Symbols.COMMENT);
+    }
+    
+}
+
 . {
 	throw new java.lang.Exception("Invalid token: \"" + yytext() + "\" at line: " + (yyline + 1));
+}
+
+<<EOF>> {
+    return new Symbol(Symbols.EOF);
 }
