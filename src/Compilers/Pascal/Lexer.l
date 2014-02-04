@@ -8,6 +8,8 @@ import java.awt.Point;
 
 %%
 %{
+    StringBuffer comment = new StringBuffer();
+    
     private Symbol symbol(int type) {
 		return new Symbol(type, yyline, yycolumn);
 	}
@@ -59,21 +61,25 @@ KRightComment = "}"
 
 <YYINITIAL> {
     {LineComment} { 
+        comment.setLength(0);
         yybegin(LINECOMMENT);
         return symbol(Symbols.COMMENT);
     }
     
     {PLeftComment} { 
+        comment.setLength(0);
         yybegin(PASCALCOMMENT);
         return symbol(Symbols.COMMENT);
     }
     
     {JLeftComment} { 
+        comment.setLength(0);
         yybegin(JAVACOMMENT);
         return symbol(Symbols.COMMENT);
     }
     
     {KLeftComment} { 
+        comment.setLength(0);
         yybegin(KEYCOMMENT);
         return symbol(Symbols.COMMENT);
     }
@@ -105,67 +111,57 @@ KRightComment = "}"
 }
 
 <LINECOMMENT> {
-    .* {
-        return symbol(Symbols.COMMENT);
+    . {
+        comment.append( yytext() );
     }
     <<EOF>> {
         yybegin(YYINITIAL);
+        return symbol(Symbols.COMMENT, comment.toString());
     }
     \n {
         yybegin(YYINITIAL);
+        return symbol(Symbols.COMMENT, comment.toString());
     }
     
 }
 
 <PASCALCOMMENT> {
-    .*{PRightComment} {
+    {PRightComment} {
         yybegin(YYINITIAL);
-        return symbol(Symbols.COMMENT);
+        return symbol(Symbols.COMMENT, (comment.toString() + yytext()));
     }
-    .*\n {
-        return symbol(Symbols.COMMENT);
+    (.|\n) {
+        comment.append( yytext() );
     }
     <<EOF>> {
         throw new java.lang.Exception("Unclosed comment. Unexpected EOF.");
     }
-    .* {
-        return symbol(Symbols.COMMENT);
-    }
-    
 }
 
 <JAVACOMMENT> {
-    .*{JRightComment} {
+    {JRightComment} {
         yybegin(YYINITIAL);
-        return symbol(Symbols.COMMENT);
+        return symbol(Symbols.COMMENT, (comment.toString() + yytext()));
     }
-    .*\n {
-        return symbol(Symbols.COMMENT);
+    (.|\n) {
+        comment.append( yytext() );
     }
     <<EOF>> {
         throw new java.lang.Exception("Unclosed comment. Unexpected EOF.");
     }
-    .* {
-        return symbol(Symbols.COMMENT);
-    }
-    
 }
 
 <KEYCOMMENT> {
-    .*{KRightComment} {
+    {KRightComment} {
         yybegin(YYINITIAL);
-        return symbol(Symbols.COMMENT);
+        return symbol(Symbols.COMMENT, (comment.toString() + yytext()));
     }
-    .*\n {
-        return symbol(Symbols.COMMENT);
+    (.|\n) {
+        comment.append( yytext() );
     }
     <<EOF>> {
         throw new java.lang.Exception("Unclosed comment. Unexpected EOF.");
     }
-    .* {
-        return symbol(Symbols.COMMENT);
-    }
-    
 }
 
 . {
