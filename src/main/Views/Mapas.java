@@ -1,5 +1,6 @@
-package main;
+package main.Views;
 
+import main.Models.Lib;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;

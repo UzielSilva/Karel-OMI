@@ -1,4 +1,4 @@
-package main;
+package main.Models;
 
 import java.io.*;
 
@@ -33,5 +33,19 @@ public class Lib {
     }
     public static BufferedReader readF(File s) throws FileNotFoundException {
             return new BufferedReader(new FileReader(s));
+    }
+    
+    public class TXT extends javax.swing.filechooser.FileFilter {
+        @Override
+        public boolean accept(File file) {
+            String filename = file.getName().toUpperCase();
+            if (file.isDirectory())
+                return true;
+            return filename.endsWith(".txt");
+        }
+        @Override
+        public String getDescription() {
+            return "*.txt";
+        }
     }
 }

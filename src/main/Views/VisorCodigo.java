@@ -1,4 +1,4 @@
-package main;
+package main.Views;
 
 import Compilers.Java.Lexer;
 import Compilers.Box;
@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
 import javax.swing.*;
 import javax.swing.text.*;
+import main.Models.Karelotitlan;
 
 /**
  * @author German gonzalez, Uziel Silva
@@ -73,7 +74,7 @@ public int getcaret(){
         for (String curline : contents) {
             read =new StringReader(curline);
         lx=new Lexer(read);
-        lx.setLanguage(Ventana2.lang);
+        lx.setLanguage(Karelotitlan.lang);
             try {
                 int n=0;
                 Symbol sym;

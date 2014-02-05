@@ -1,7 +1,11 @@
-package main;
+package main.Models;
 
 import java.awt.event.MouseEvent;
 import java.io.File;
+import main.Views.Mapas;
+import main.Views.TabEjecutar;
+import main.Views.TabMundo;
+import main.Views.Ventana2;
 
 /**
  * @author German gonzalez, Uziel Silva
@@ -13,50 +17,50 @@ public class EditorMapas extends Mapas{
     
     public void open(File s) {
         d.reads(s);
-        Ventana2.mtzumba.setText(z + "");
+        TabMundo.tzumba.setText(z + "");
         if (z == 0xFFFF) {
-            Ventana2.mtzumba.setText("INFINITO");
+            TabMundo.tzumba.setText("INFINITO");
         }
     }
 
     private byte getzumba() {
-        if ("".equals(Ventana2.mtzumba.getText())) {
-            Ventana2.mtzumba.setText("0");
+        if ("".equals(TabMundo.tzumba.getText())) {
+            TabMundo.tzumba.setText("0");
         }
-        if ("INFINITO".equals(Ventana2.mtzumba.getText())) {
+        if ("INFINITO".equals(TabMundo.tzumba.getText())) {
             return (byte) 0xFFFF;
         }
         try {
-            return (byte) Integer.parseInt(Ventana2.mtzumba.getText());
+            return (byte) Integer.parseInt(TabMundo.tzumba.getText());
         } catch (Exception e) {
             return 0;
         }
     }
 
     public void save() {
-        d.writes( flechax, flechay, (byte) (flechad + 1), getzumba(), walls,  Ventana2.Mpanel.getzumbamap());
+        d.writes( flechax, flechay, (byte) (flechad + 1), getzumba(), walls,  TabMundo.editor.getzumbamap());
     }
 
     public void savez(int ScrlH, int ScrlV) {
         int xx = (x / 2) + ScrlH;
         int yy = (y / 2) + (94 - ScrlV);
         if (x > 0 && y > 0 && xx < 102 && yy < 100) {
-            if ("".equals(Ventana2.mtzamba.getText())) {
-                Ventana2.mtzamba.setText("0");
+            if ("".equals(TabMundo.tzamba.getText())) {
+                TabMundo.tzamba.setText("0");
             }
             try {
-                if (Ventana2.mtzamba.getText().length() > 3) {
-                    Ventana2.mtzamba.setText(Ventana2.mtzamba.getText().substring(0, 3));
+                if (TabMundo.tzamba.getText().length() > 3) {
+                    TabMundo.tzamba.setText(TabMundo.tzamba.getText().substring(0, 3));
                 }
-                Ventana2.Mpanel.zumbador[xx + 1][yy + 1] = (short) Integer.parseInt(Ventana2.mtzamba.getText());
+                TabMundo.editor.zumbador[xx + 1][yy + 1] = (short) Integer.parseInt(TabMundo.tzamba.getText());
             } catch (Exception e) {
             }
         }
-        Ventana2.mtzamba.setText("");
+        TabMundo.tzamba.setText("");
         refresh(ScrlH, ScrlV);
         x = -1;
         y = -1;
-        Ventana2.mtzamba.setVisible(false);
+        TabMundo.tzamba.setVisible(false);
     }
     public final void reset(int ScrlH, int ScrlV) {
         x = -1;
@@ -82,7 +86,7 @@ public class EditorMapas extends Mapas{
                 }
             }
         }
-            Ventana2.mtzumba.setText("0");
+            TabMundo.tzumba.setText("0");
         savez(ScrlH, ScrlV);
     }
 
@@ -116,11 +120,11 @@ public class EditorMapas extends Mapas{
                 x = -1;
                 y = -1;
             } else {
-                    Ventana2.mtzamba.setVisible(true);
-                    Ventana2.mtzamba.setText(zumbador[xx + 1][yy + 1] + "");
-                    Ventana2.mtzamba.select(0, Ventana2.mtzamba.getText().length());
-                    Ventana2.mtzamba.setBounds(x * 16 - 8, this.getHeight() - (y * 16) - 21, 32, 24);
-                    Ventana2.mtzamba.requestFocus();
+                    TabMundo.tzamba.setVisible(true);
+                    TabMundo.tzamba.setText(zumbador[xx + 1][yy + 1] + "");
+                    TabMundo.tzamba.select(0, TabMundo.tzamba.getText().length());
+                    TabMundo.tzamba.setBounds(x * 16 - 8, this.getHeight() - (y * 16) - 21, 32, 24);
+                    TabMundo.tzamba.requestFocus();
                 
             }}else {
                     yy = (byte) ((y / 2) + (95 - ScrlV));
@@ -134,6 +138,6 @@ public class EditorMapas extends Mapas{
                 y = -1;
                 }
         }
-            Ventana2.Mpanel2.reset(false);
+            TabEjecutar.Mpanel2.reset(false);
     }
 }

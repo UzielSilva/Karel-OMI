@@ -6,9 +6,9 @@
 
 package Compilers.Program;
 
-import main.EditorMapas;
-import main.Lib;
-import main.Ventana2;
+import main.Models.EditorMapas;
+import main.Models.Lib;
+import main.Views.TabEjecutar;
 
 /**
  *
@@ -17,30 +17,30 @@ import main.Ventana2;
 public class EnvironmentK {
     
     public boolean isFrontClear(){
-            return !Lib.byteBol(EditorMapas.walls[Ventana2.Mpanel2.flechax + 1][Ventana2.Mpanel2.flechay])[Ventana2.Mpanel2.flechad];
+            return !Lib.byteBol(EditorMapas.walls[TabEjecutar.Mpanel2.flechax + 1][TabEjecutar.Mpanel2.flechay])[TabEjecutar.Mpanel2.flechad];
     }
     public boolean isLeftClear(){
-            return !Lib.byteBol(EditorMapas.walls[Ventana2.Mpanel2.flechax + 1][Ventana2.Mpanel2.flechay])[(Ventana2.Mpanel2.flechad + 3) % 4];
+            return !Lib.byteBol(EditorMapas.walls[TabEjecutar.Mpanel2.flechax + 1][TabEjecutar.Mpanel2.flechay])[(TabEjecutar.Mpanel2.flechad + 3) % 4];
     }
     public boolean isRightClear(){
-            return !Lib.byteBol(EditorMapas.walls[Ventana2.Mpanel2.flechax + 1][Ventana2.Mpanel2.flechay])[(Ventana2.Mpanel2.flechad + 1) % 4];
+            return !Lib.byteBol(EditorMapas.walls[TabEjecutar.Mpanel2.flechax + 1][TabEjecutar.Mpanel2.flechay])[(TabEjecutar.Mpanel2.flechad + 1) % 4];
     }
     public boolean isNextToABeeper(){
-            return Ventana2.Mpanel2.getzumbamap()[Ventana2.Mpanel2.flechax + 1][Ventana2.Mpanel2.flechay] != 0;
+            return TabEjecutar.Mpanel2.getzumbamap()[TabEjecutar.Mpanel2.flechax + 1][TabEjecutar.Mpanel2.flechay] != 0;
     }
     public boolean isThereAnyBeepersInBag(){
-            return Ventana2.Mpanel2.z != 0;
+            return TabEjecutar.Mpanel2.z != 0;
     }
     public boolean isFacingNorth(){
-            return Ventana2.Mpanel2.flechad == 0;
+            return TabEjecutar.Mpanel2.flechad == 0;
     }
     public boolean isFacingSouth(){
-            return Ventana2.Mpanel2.flechad == 2;
+            return TabEjecutar.Mpanel2.flechad == 2;
     }
     public boolean isFacingEast(){
-            return Ventana2.Mpanel2.flechad == 1;
+            return TabEjecutar.Mpanel2.flechad == 1;
     }
     public boolean isFacingWest(){
-            return Ventana2.Mpanel2.flechad == 3;
+            return TabEjecutar.Mpanel2.flechad == 3;
     }
 }

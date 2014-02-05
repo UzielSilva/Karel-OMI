@@ -1,5 +1,6 @@
-package main;
+package main.Models;
 
+import main.Views.VisorCodigo;
 import java.awt.*;
 import java.io.*;
 import java.util.Scanner;
@@ -8,6 +9,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 import javax.swing.undo.*;
+import main.Views.TabPrograma;
+import main.Views.Ventana2;
 
 /**
  * @author German gonzalez, Uziel Silva
@@ -77,7 +80,7 @@ boolean paste=false;
     public void caret() {
         try {
             content = "";
-            viewport = Ventana2.cjScrollPane.getViewport();
+            viewport = TabPrograma.jScrollPane.getViewport();
             startPoint = viewport.getViewPosition();
             size = viewport.getExtentSize();
             endPoint = new Point(startPoint.x + size.width, startPoint.y + size.height);
@@ -91,7 +94,7 @@ boolean paste=false;
             int pos = caret.getDot();
             int x = (((this.modelToView(pos).x) - 37) / 8) + 1;
             int y = (((this.modelToView(pos).y) - 1) / h) + 1;
-            Ventana2.clpos.setText("linea: " + y + ", columa: " + x);
+            TabPrograma.clpos.setText("linea: " + y + ", columa: " + x);
         } catch (Exception e) {
         }
     }
@@ -116,7 +119,7 @@ boolean paste=false;
         }
         time = -1;
             int pos = caret.getDot();
-            viewport = Ventana2.cjScrollPane.getViewport();
+            viewport = TabPrograma.jScrollPane.getViewport();
         try {
             startPoint=new Point(0,this.modelToView(pos).y);
         } catch (BadLocationException ex) {}

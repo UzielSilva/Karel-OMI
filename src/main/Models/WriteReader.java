@@ -1,8 +1,12 @@
-package main;
+package main.Models;
 
+import main.Models.Lib;
+import main.Models.EditorMapas;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.logging.*;
+import main.Views.TabMundo;
+import main.Views.Ventana2;
 
 /**
  * @author German gonzalez
@@ -14,11 +18,11 @@ public class WriteReader {
 
     public void writes(byte x, byte y, byte d, int z, byte map[][], short zumba[][]) {
         try {
-            arc = Lib.write(Ventana2.world);
+            arc = Lib.write(Karelotitlan.world);
             byte[] bytes = ByteBuffer.allocate(4).putInt(z).array();
             arc.write(new byte[]{0x4B, 0x41, 0x52, 0x45, 0x4C, 0x20, 0x4F, 0x4D, 0x49, 0x2E, 0x01, 0x00, 0x64, 0x00, 0x64, 0x00,
                                  bytes[3], bytes[2],x, 0x00, y, 0x00, d, 0x00});
-            walls(map, Ventana2.Mpanel.getzumbamap());
+            walls(map, TabMundo.editor.getzumbamap());
             arc.flush();
             arc.close();
             arc=null;
@@ -52,7 +56,7 @@ public class WriteReader {
 
     public void reads(File s) {
         try {
-            Ventana2.Mpanel.zumbador = new short[103][103];
+            TabMundo.editor.zumbador = new short[103][103];
             EditorMapas.walls = new byte[103][103];
             read = Lib.read(s);
             read.skip(16);//head
@@ -66,10 +70,10 @@ public class WriteReader {
     }
 
     private void karelDataW() throws IOException {
-        Ventana2.Mpanel.z = rd();
-        Ventana2.Mpanel.flechax = (byte) rd();
-        Ventana2.Mpanel.flechay = (byte) rd();
-        Ventana2.Mpanel.flechad = (byte) (rd() - 1);
+        TabMundo.editor.z = rd();
+        TabMundo.editor.flechax = (byte) rd();
+        TabMundo.editor.flechay = (byte) rd();
+        TabMundo.editor.flechad = (byte) (rd() - 1);
 
     }
 
@@ -82,7 +86,7 @@ public class WriteReader {
             EditorMapas.walls[rd()+1][rd()] = (byte) rd();
         }
         for (int i = 0; i < zumba; i++){
-            Ventana2.Mpanel.zumbador[rd()+1][rd()] = (short) rd();
+            TabMundo.editor.zumbador[rd()+1][rd()] = (short) rd();
         }
     }
     private int rd() throws IOException {
