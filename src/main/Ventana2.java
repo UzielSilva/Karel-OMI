@@ -25,59 +25,107 @@ public class Ventana2 extends javax.swing.JApplet {
     private boolean Mapedit=false;
     private boolean Codedit=false;
     
-    public static File world;
-    public static File code;
+    public static File world=null;
+    public static File code=null;
    
-    public static String[] parsedDoc;
-    public static Integer[] rows;
-    public static EnvironmentK env;
-    public static Program program;
-    public static Box.Language lang = Box.ES;
+    public static String[] parsedDoc=null;
+    public static Integer[] rows=null;
+    public static EnvironmentK env=null;
+    public static Program program=null;
+    public static Box.Language lang = null;
     
-    public static EditorMapas Mpanel= new EditorMapas();
-    public static VisorMapas Mpanel2=new VisorMapas();
-    public static EditorCodigo textPane = new EditorCodigo();
-    public static VisorCodigo textPane2= new VisorCodigo(); 
-    private JPopupMenu popmenu=new JPopupMenu();
-  private JMenuItem menuItem;
-    private JButton mnuevo=new JButton("Nuevo");
-    private JButton cnuevo=new JButton("Nuevo");
-    private JButton mAbrir=new JButton("Abrir");
-    private JButton cAbrir=new JButton("Abrir");
-    private JButton mGuardar=new JButton("Guardar");
-    private JButton cGuardar=new JButton("Guardar");
-    private JButton mGuardarcomo=new JButton("Guardar Como");
-    private JButton cGuardarcomo=new JButton("Guardar Como");
-    private JButton mInfinitos=new JButton("Infinitos");
-    private JButton cCompilar=new JButton("Compilar");
-    private JButton eadelante=new JButton("Adelante");
-    private JButton einiciar=new JButton("Iniciar");
-    private JButton ecorrer=new JButton("Correr");
-    private JButton edetener=new JButton("Detener");
-    public static JScrollBar mbarraH= new JScrollBar(JScrollBar.HORIZONTAL,0,5,0,87);
-    public static JScrollBar ebarraH= new JScrollBar(JScrollBar.HORIZONTAL,0,5,0,96);
-    public static JScrollBar mbarraV= new JScrollBar(JScrollBar.VERTICAL,95,10,0,105);
-    public static JScrollBar ebarraV= new JScrollBar(JScrollBar.VERTICAL,95,10,0,105);
-    private JLabel lzumba=new JLabel("Zumbadores en la mochila");
-    private JLabel lzumba2=new JLabel("Zumbadores en la mochila");
-    public static JLabel clpos=new JLabel("linea 0, columna 0");
-    private JLabel elejecu=new JLabel("Retardo de ejecucion (ms)");
-    private JSplitPane eSplitPane1 = new JSplitPane();
-    private JSplitPane eSplitPane2= new JSplitPane();
-    public static JTextField mtzumba=new JTextField("0");
-    public static JTextField mtzamba=new JTextField("0");
-    public static JTextField etzumba=new JTextField("0");
-    public static JTextField etretar=new JTextField("100");
-    public static JTextArea edbug=new JTextArea();
-    public static JTabbedPane tabpanel=new JTabbedPane();
-    private JEditorPane help= new JEditorPane("text/html",""); 
-    public static JScrollPane cjScrollPane= new JScrollPane();
-    public JScrollPane ejScrollPane2= new JScrollPane(textPane2);
-
+    public static EditorMapas Mpanel =null;
+    public static VisorMapas Mpanel2=null;
+    public static EditorCodigo textPane =null;
+    public static VisorCodigo textPane2=null; 
+    private JPopupMenu popmenu=null;
+  private JMenuItem menuItem=null;
+    private JButton mnuevo=null;
+    private JButton cnuevo=null;
+    private JButton mAbrir=null;
+    private JButton cAbrir=null;
+    private JButton mGuardar=null;
+    private JButton cGuardar=null;
+    private JButton mGuardarcomo=null;
+    private JButton cGuardarcomo=null;
+    private JButton mInfinitos=null;
+    private JButton cCompilar;
+    private JButton eadelante;
+    private JButton einiciar;
+    private JButton ecorrer;
+    private JButton edetener;
+    public static JScrollBar mbarraH=null;
+    public static JScrollBar ebarraH=null;
+    public static JScrollBar mbarraV=null;
+    public static JScrollBar ebarraV=null;
+    private JLabel lzumba=null;
+    private JLabel lzumba2=null;
+    public static JLabel clpos=null;
+    private JLabel elejecu=null;
+    private JSplitPane eSplitPane1 =null;
+    private JSplitPane eSplitPane2=null;
+    public static JTextField mtzumba=null;
+    public static JTextField mtzamba=null;
+    public static JTextField etzumba=null;
+    public static JTextField etretar=null;
+    public static JTextArea edbug=null;
+    public static JTabbedPane tabpanel=null;
+    public static JScrollPane cjScrollPane=null;
+    public JScrollPane ejScrollPane2=null;
+    @Override
   public void init() {
     initComponents();
   }
     public void initComponents(){
+        
+        
+   
+  lang = Box.ES;
+    
+     Mpanel= new EditorMapas();
+    Mpanel2=new VisorMapas();
+    textPane = new EditorCodigo();
+  textPane2= new VisorCodigo(); 
+    popmenu=new JPopupMenu();
+     mnuevo=new JButton("Nuevo");
+     cnuevo=new JButton("Nuevo");
+    mAbrir=new JButton("Abrir");
+ cAbrir=new JButton("Abrir");
+    mGuardar=new JButton("Guardar");
+    cGuardar=new JButton("Guardar");
+  mGuardarcomo=new JButton("Guardar Como");
+  cGuardarcomo=new JButton("Guardar Como");
+     mInfinitos=new JButton("Infinitos");
+   cCompilar=new JButton("Compilar");
+    eadelante=new JButton("Adelante");
+   einiciar=new JButton("Iniciar");
+    ecorrer=new JButton("Correr");
+     edetener=new JButton("Detener");
+    mbarraH= new JScrollBar(JScrollBar.HORIZONTAL,0,5,0,87);
+   ebarraH= new JScrollBar(JScrollBar.HORIZONTAL,0,5,0,96);
+    mbarraV= new JScrollBar(JScrollBar.VERTICAL,95,10,0,105);
+ ebarraV= new JScrollBar(JScrollBar.VERTICAL,95,10,0,105);
+    lzumba=new JLabel("Zumbadores en la mochila");
+    lzumba2=new JLabel("Zumbadores en la mochila");
+    clpos=new JLabel("linea 0, columna 0");
+    elejecu=new JLabel("Retardo de ejecucion (ms)");
+     eSplitPane1 = new JSplitPane();
+     eSplitPane2= new JSplitPane();
+    mtzumba=new JTextField("0");
+    mtzamba=new JTextField("0");
+    etzumba=new JTextField("0");
+ etretar=new JTextField("100");
+   edbug=new JTextArea();
+   tabpanel=new JTabbedPane();
+    cjScrollPane= new JScrollPane();
+    ejScrollPane2= new JScrollPane(textPane2);
+        
+        
+        
+        
+        
+        
+        
         setMinimumSize(new Dimension(660, 380));
         cjScrollPane.setViewportView(textPane);
         ejScrollPane2.setViewportView(textPane2);
@@ -261,24 +309,8 @@ public class Ventana2 extends javax.swing.JApplet {
         cc3.add(cc21,BorderLayout.NORTH);
         cc3.add(eSplitPane1,BorderLayout.CENTER);
                     tabpanel.addTab("Ejecutar", cc3);
-                    tabpanel.addTab("Ayuda", new JScrollPane(help));
-        help.setEditable(false);
-        try {
-            help.setPage(getClass().getResource("HelpDoc/KarelSyntax_es.html"));
-        } catch (IOException ex) {}
         this.add(tabpanel);
                Mpanel.reset(mbarraH.getValue(), mbarraV.getValue());
-        help.addHyperlinkListener(new HyperlinkListener() {
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent event) {
-              if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-                try {
-                  help.setPage(event.getURL());
-                } catch(IOException ioe) {
-                }
-              }
-            }
-        });
         mnuevo.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent evt) {
