@@ -218,7 +218,7 @@ method_declarator   ::= NAME:n defparameter {:
                             customParamMethod.put(n,parser.docSize); inMethod = true;
                             RESULT = nleft;
                         :}
-        |               NAME:n {: 
+        |               NAME:n LPAREN RPAREN {: 
                             customMethod.put(n,parser.docSize); inMethod = true; 
                             RESULT = nleft;
                         :}
