@@ -80,7 +80,7 @@ public class Ventana2 extends javax.swing.JApplet {
         
         
    
-  lang = Box.ES;
+  lang = Box.PASCALES;
     
      Mpanel= new EditorMapas();
     Mpanel2=new VisorMapas();

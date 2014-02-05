@@ -26,7 +26,7 @@ import java.awt.Point;
 %}
 
 %init{
-        Language = new Box(Box.ES);
+        Language = new Box(Box.JAVAEN);
 %init}
 
 %class Lexer

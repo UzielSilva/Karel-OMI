@@ -6,8 +6,6 @@
 
 package Compilers;
 
-import Compilers.Pascal.Language.*;
-
 /**
  *
  * @author Uziel
@@ -19,10 +17,16 @@ public abstract class Languages {
         public Language(int lang){
             switch (lang){
                 case 0:
-                    KeysArray = KeysEN.KeysArray;
+                    KeysArray = Compilers.Pascal.Language.KeysES.KeysArray;
                     break;
                 case 1:
-                    KeysArray = KeysES.KeysArray;
+                    KeysArray = Compilers.Pascal.Language.KeysEN.KeysArray;
+                    break;
+                case 2:
+                    KeysArray = Compilers.Java.Language.KeysES.KeysArray;
+                    break;
+                case 3:
+                    KeysArray = Compilers.Java.Language.KeysEN.KeysArray;
                     break;
             }
             this.lang = lang;
@@ -31,8 +35,13 @@ public abstract class Languages {
             return this.lang == l.lang;
         }
     }
-    public static final Language EN = new Language(0);
+    public static final Language PASCALES = new Language(0);
     
-    public static final Language ES = new Language(1);
+    public static final Language PASCALEN = new Language(1);
+    
+    public static final Language JAVAES = new Language(2);
+    
+    public static final Language JAVAEN = new Language(3);
+
 
 }

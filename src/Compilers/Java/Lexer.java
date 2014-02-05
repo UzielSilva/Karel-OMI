@@ -254,7 +254,7 @@ public class Lexer implements java_cup.runtime.Scanner {
    * @param   in  the java.io.Reader to read input from.
    */
   public Lexer(java.io.Reader in) {
-          Language = new Box(Box.ES);
+          Language = new Box(Box.JAVAEN);
     this.zzReader = in;
   }
 
