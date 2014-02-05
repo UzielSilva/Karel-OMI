@@ -1,6 +1,6 @@
 package main;
 
-import Compilers.Pascal.Lexer;
+import Compilers.Java.Lexer;
 import Compilers.Box;
 import java.awt.*;
 import java.io.IOException;

@@ -2,8 +2,8 @@ package main;
 
 import Compilers.Box;
 import Compilers.Program.EnvironmentK;
-import Compilers.Pascal.Lexer;
-import Compilers.Pascal.Parser;
+import Compilers.Java.Lexer;
+import Compilers.Java.Parser;
 import Compilers.Program.Program;
 import com.apple.eawt.Application;
 import java.awt.*;
@@ -80,7 +80,7 @@ public class Ventana2 extends javax.swing.JApplet {
         
         
    
-  lang = Box.PASCALES;
+  lang = Box.JAVAEN;
     
      Mpanel= new EditorMapas();
     Mpanel2=new VisorMapas();

@@ -238,7 +238,7 @@ method_const        ::= NAME:n defparameter {:
                             RESULT = nleft;
                             parser.setDoc(parser.docSize.toString(),nleft,0);
                         :}
-        |               NAME:n {: 
+        |               NAME:n LPAREN RPAREN {: 
                             
                             if (classname != n)
                                 parser.report_error(n + " is not the name of the class.",(Object)nleft);
