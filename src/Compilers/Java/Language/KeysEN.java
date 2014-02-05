@@ -18,7 +18,7 @@ public class KeysEN{
 
         new KeyWord( "class"                        , Symbols.CLASS ),
         new KeyWord( "void"                         , Symbols.VOID ),
-        new KeyWord( "define"                       , Symbols.VOID ),
+        new KeyWord( "define"                       , Symbols.DEFINE ),
         new KeyWord( "else"                         , Symbols.ELSE ),
         new KeyWord( "if"                           , Symbols.IF ),
         new KeyWord( "iterate"                      , Symbols.ITERATE ),

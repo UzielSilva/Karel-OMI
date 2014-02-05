@@ -18,7 +18,7 @@ public class KeysES{
 
         new KeyWord( "clase"                        , Symbols.CLASS ),
         new KeyWord( "void"                         , Symbols.VOID ),
-        new KeyWord( "define"                       , Symbols.VOID ),
+        new KeyWord( "define"                       , Symbols.DEFINE ),
         new KeyWord( "sino"                         , Symbols.ELSE ),
         new KeyWord( "si"                           , Symbols.IF ),
         new KeyWord( "repetir"                      , Symbols.ITERATE ),

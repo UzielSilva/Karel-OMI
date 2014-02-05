@@ -1,0 +1,484 @@
+package Compilers.Java;
+
+import Compilers.Box;
+import java.util.Map.Entry;
+import java_cup.runtime.*;
+import java.util.HashMap;
+import java.util.ArrayList;
+
+parser code {:    
+
+    public ArrayList<String> parsedDoc;
+
+    public ArrayList<Integer> row;
+
+    public Integer docSize;
+
+    public String errors;
+    
+    public boolean giveMeInt = false;
+
+    public void addDoc(String s, Integer i){
+        parsedDoc.add(s);
+        row.add(i);
+        docSize++;
+    }
+
+    public void setDoc(String s, Integer i, Integer addr){
+        parsedDoc.set(addr,s);
+        row.set(addr,i);
+    }
+
+    public void unrecovered_syntax_error(Symbol cur_token) throws java.lang.Exception{
+        if(cur_token.sym != 1){
+            String s = (new Box(lang)).getType(cur_token.sym);
+            if(cur_token.left == -1)
+                throw new java.lang.Exception("Syntax error: Unexpected EOF.");
+            throw new java.lang.Exception("Syntax error: Unexpected " + s + " at line: " + (cur_token.left +1) + ".");
+
+        }
+    }
+    
+    private Box.Language lang;
+    
+    public void setLanguage(Box.Language lang){
+        this.lang = lang;
+    }
+    
+    public void syntax_error(Symbol cur_token) {
+        if(cur_token.sym != 1){
+            String s = (new Box(lang)).getType(cur_token.sym);
+            report_error("Syntax error: Unexpected " + s + " at line: " + (cur_token.left +1) + ".",cur_token);
+
+        }
+    }
+
+    public void report_fatal_error(String message, Object info) throws java.lang.Exception{
+        throw new java.lang.Exception(message);
+    }
+
+    public void report_error(String message, Object info){
+        Integer s = Integer.parseInt(info.toString());
+        errors += ("Error: " + message + " In line: " + (s+1) + "\n");
+    }
+
+    public static void main(String args[]) throws Exception 
+    {
+        Lexer lexer = new Lexer(System.in);
+        Parser parser = new Parser(lexer);
+        parser.parse();
+    }
+:};
+
+action code {:
+    private String contextParam = "";
+    private HashMap<String,Integer> customMethod = new HashMap();
+    private HashMap<String,Integer> customParamMethod = new HashMap();
+    private HashMap<String,Integer> requestMethod = new HashMap();
+    private HashMap<String,Integer> requestParamMethod = new HashMap();
+    private String classname = "";
+    private boolean inMethod = false;
+:};
+
+init with {:
+    docSize = 0;
+    parsedDoc = new ArrayList();
+    row = new ArrayList();
+    addDoc("",0);
+:};
+
+scan with {:
+    Symbol s = getScanner().next_token();
+    while(s.sym == Symbols.COMMENT){
+        s = getScanner().next_token();
+    }
+    // System.out.println(s.sym);
+    return s;
+:};
+
+terminal     	SEMICOL, 
+    			LPAREN, 
+    			RPAREN,
+    			LKEY,
+    			RKEY;
+
+    	/* Define tokens as needed. */
+
+terminal String
+
+            	CLASS,              VOID,               DEFINE,          	ELSE,
+            	IF,             	ITERATE,           	WHILE,              PRED,
+            	SUCC,            	AND,                OR,                 NOT,
+            	EXITINST,  
+
+                MOVE,               PICKBPR,            PUTBPR,             TURNLEFT,
+                TURNOFF,
+                
+                CFCLEAR,            CFBLOCK,            CLCLEAR,            CLBLOCK,
+                CRCLEAR,            CRBLOCK,            NEXTB,              NONEXTB,
+                ANYBBAG,            NOBBAG,             FACINGN,            FACINGS,
+                FACINGE,            FACINGW,            NOFACINGN,          NOFACINGS,
+                NOFACINGE,          NOFACINGW,          IFZERO,
+
+                NAME,               COMMENT;
+
+terminal Integer 
+
+                NUMBER;
+
+non terminal Integer
+
+                //  Program symbols
+
+                program,            class_name,         class_body,         declarations,
+                method_declaration, method_declarator,  defparameter,       constructor,          
+                method_const,       block,              statement_list,     statement,
+
+                //  If symbols
+
+                if,                 ifpart,             thenkey,             elsepart,           
+                elsekey,
+
+                //  While symbols
+
+                while,              dokey,
+
+                //  Iterate symbols
+
+                iterate,            iteratehead,        iteratekey,
+                
+                //  Statement symbols
+
+                common_statement,   structure,          custom_statement,   custom_p_statement, 
+
+                //  Args symbols
+
+                args,               arg,
+
+                //  Common symbols
+
+                number,             modifier,           pred,               predkey,
+                succ,               succkey,
+
+                //  Primitive symbols
+
+                act,                conditional,        ifzerokey,          not,
+                conjunction,         type;
+
+precedence left ELSE, AND, OR;
+
+start with program;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        Program grammar                                       //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+program             ::= CLASS class_name:n class_body:b {:
+                            Entry<String,Integer>[] rMethods = requestMethod.entrySet().toArray(new Entry[0]);
+                            
+                            for(Entry<String,Integer> e : rMethods){
+                                Integer dir = customMethod.get(e.getKey());
+                                Integer r = parser.row.get(e.getValue());
+                                if (dir == null)
+                                    parser.report_error(n + " is not defined previously or has too many args.",(Object)r);
+                                else{
+                                    parser.setDoc(dir.toString(),r,e.getValue());
+                                }
+                            }
+                            
+                            Entry<String,Integer>[] pRMethods = requestParamMethod.entrySet().toArray(new Entry[0]);
+                            
+                            for(Entry<String,Integer> e : pRMethods){
+                                Integer dir = customParamMethod.get(e.getKey());
+                                Integer r = parser.row.get(e.getValue());
+                                if (dir == null)
+                                    parser.report_error(n + " is not defined previously or has too many args.",(Object)r);
+                                else{
+                                    parser.setDoc(dir.toString(),r,e.getValue());
+                                }
+                            }
+                        :}
+        ;
+
+class_name          ::= NAME:s {:
+                            classname = s;
+                        :}
+        ;
+
+class_body          ::= LKEY declarations constructor declarations RKEY
+        ;
+
+declarations        ::= /* No declarations */
+        |               method_declaration declarations
+        ;
+        
+method_declaration  ::= type method_declarator block:s {: parser.addDoc("RETURN",sleft); inMethod = false;:}
+        ;
+
+method_declarator   ::= NAME:n defparameter {: 
+                            customParamMethod.put(n,parser.docSize); inMethod = true;
+                            RESULT = nleft;
+                        :}
+        |               NAME:n {: 
+                            customMethod.put(n,parser.docSize); inMethod = true; 
+                            RESULT = nleft;
+                        :}
+        ;
+
+defparameter        ::= LPAREN NAME:n RPAREN {: contextParam = n; :}
+        ;
+        
+constructor         ::= method_const block
+        ;
+
+method_const        ::= NAME:n defparameter {: 
+                            if (classname != n)
+                                parser.report_error(n + " is not the name of the class.",(Object)nleft);
+                            parser.giveMeInt = true;
+                            customParamMethod.put(n,parser.docSize);
+                            RESULT = nleft;
+                            parser.setDoc(parser.docSize.toString(),nleft,0);
+                        :}
+        |               NAME:n {: 
+                            
+                            if (classname != n)
+                                parser.report_error(n + " is not the name of the class.",(Object)nleft);
+                            customMethod.put(n,parser.docSize);
+                            RESULT = nleft;
+                            parser.setDoc(parser.docSize.toString(),nleft,0);
+                        :}
+        ;
+
+block               ::= LKEY statement_list:s RKEY
+        ;
+
+statement_list      ::= common_statement:s1 SEMICOL statement_list:s2 {: RESULT = s1+s2; :}
+        |               common_statement:s {: RESULT = s; :}
+        ;
+        
+statement           ::= common_statement:s SEMICOL {: RESULT = s; :}
+        |               LKEY statement_list:s RKEY {: RESULT = s; :}
+        ;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        If grammar                                            //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+if                  ::= ifpart:i statement:s1 elsepart:e statement:s2 {: 
+
+                            RESULT = i + s1 + e + s2;
+                            parser.setDoc(new Integer(parser.docSize-s2).toString(),ileft,parser.docSize-((e + s1 + s2)+1));
+                            parser.setDoc(new Integer(parser.docSize).toString(),eleft,parser.docSize-(s2+1));
+                        :}
+        |               ifpart:i statement:s1{: 
+
+                            RESULT = i + s1;
+                            parser.setDoc(new Integer(parser.docSize).toString(),ileft,parser.docSize-(s1+1));
+                        :}
+        ;
+
+ifpart              ::= IF LPAREN conditional:c thenkey:t {: 
+
+                            RESULT = c+t;  
+                        :}
+        ;
+
+thenkey             ::= RPAREN:t  {: 
+
+                            parser.addDoc("CONDBRANCH",tleft);
+                            parser.addDoc("",tleft);
+                            RESULT = 2;
+
+                        :}
+        ;
+
+elsepart            ::= elsekey:e {: RESULT = e; :}
+        ;
+
+elsekey             ::= ELSE:t {: 
+
+                            parser.addDoc("BRANCH",tleft);
+                            parser.addDoc("",tleft);
+                            RESULT = 2;
+
+                        :}
+        ;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        While grammar                                         //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+while              ::=  WHILE LPAREN conditional:c dokey:d statement:s  {: 
+
+                            parser.addDoc("BRANCH",sleft);
+                            RESULT = 1 + c + d + s + 2;
+                            parser.addDoc((new Integer(parser.docSize - RESULT + 2)).toString(),sleft);
+                            parser.setDoc(parser.docSize.toString(),sleft,parser.docSize-(s+3));
+
+                        :}
+        ;
+
+dokey               ::= RPAREN:t  {: 
+
+                            parser.addDoc("CONDBRANCH",tleft);
+                            parser.addDoc("",tleft);
+                            RESULT = 2;
+
+                        :}
+        ;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        Iterate grammar                                       //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+iterate             ::= iteratehead:i statement:t {:  
+                        parser.addDoc("RETURN",tleft); 
+                        RESULT = t + i + 1;
+                        parser.setDoc(parser.docSize.toString(),tleft,parser.docSize-(t+2)); 
+                        :}
+        ;
+
+iteratehead         ::= iteratekey LPAREN arg:n RPAREN:t {:  
+                            parser.addDoc("",tleft); 
+                            RESULT = 1 + n + 1;
+                        :}
+        ;
+
+iteratekey          ::= ITERATE:e {: parser.addDoc("ITERATE",eleft); :}
+        ;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        Statement grammar                                     //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+common_statement    ::=  /* No statement */ {: RESULT = 0; :}
+        |               structure:s {: RESULT = s; :}
+        |               act LPAREN RPAREN {: RESULT = 1; :}
+        |               custom_statement:s  RPAREN {: RESULT = s; :}
+        |               custom_p_statement:s  args:p RPAREN {: RESULT = s+p; :}
+        |               EXITINST:e LPAREN RPAREN {: 
+                            if(inMethod == false){
+                                RESULT = 0;
+                                parser.report_error("Exit instruction in main.",(Object)eleft);
+                            }else{
+                                RESULT = 1;
+                                parser.addDoc("RETURN",eleft); 
+                            }
+                        :}
+        ;
+
+structure           ::= if:i {: RESULT = i; :}
+        |               while:w {: RESULT = w; :}
+        |               iterate:i {: RESULT = i; :}
+        ;
+
+custom_statement    ::= NAME:n LPAREN {:
+                            parser.addDoc("CALL",nleft);
+                            requestMethod.put(n,parser.docSize);
+                            parser.addDoc("",nleft);
+                            RESULT = 2;
+                        :}
+        ;
+custom_p_statement  ::= NAME:n LPAREN {:
+                            parser.addDoc("PARAMCALL",nleft);
+                            requestParamMethod.put(n,parser.docSize);
+                            parser.addDoc("",nleft);
+                            RESULT = 2;
+                        :}
+        ;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        Args grammar                                          //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+args                ::= arg:a /* comma args */ {: RESULT = a; :}
+        ;
+
+arg                 ::= number:n {: RESULT = n; :}
+        |               modifier:m {: RESULT = m; :}
+        |               NAME:n {:
+                            if(contextParam.compareTo(n) != 0){
+                                RESULT = 0;
+                                parser.report_error("Undefined parameter.",(Object)nleft);
+                            }else{
+                                parser.addDoc("PARAM",nleft); 
+                                RESULT = 1;
+                            }
+                        :}
+        ;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        Common grammar                                        //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+number              ::= NUMBER:n {: 
+                            parser.addDoc(n.toString(),nleft); 
+                            RESULT = 1; 
+                        :}
+        ;
+
+modifier            ::= pred:p {: RESULT = p; :}
+        |               succ:s {: RESULT = s; :}
+        ;
+
+pred                ::= predkey LPAREN arg:p RPAREN {: RESULT = p+1; :} 
+        ;
+
+predkey             ::= PRED:e {: parser.addDoc("PRED",eleft); :}
+        ;
+
+succ                ::= succkey LPAREN arg:p RPAREN {: RESULT = p+1; :}  
+        ;
+
+succkey             ::= SUCC:e {: parser.addDoc("SUCC",eleft); :}
+        ;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//                                        Primitives grammar                                    //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+act                 ::= MOVE:e {: parser.addDoc("MOVE",eleft); :}
+        |               PICKBPR:e {: parser.addDoc("PICKBPR",eleft); :}
+        |               PUTBPR:e {: parser.addDoc("PUTBPR",eleft); :}
+        |               TURNLEFT:e {: parser.addDoc("TURNLEFT",eleft); :}
+        |               TURNOFF:e {: parser.addDoc("TURNOFF",eleft); :}
+        ;
+        
+type                ::= VOID
+        |               DEFINE
+        ;
+
+conditional         ::= ifzerokey:e LPAREN arg:a RPAREN {: RESULT = 1 + a; :}
+        |               not conditional:c {: RESULT = c + 1; :}
+        |               conditional:c1 conjunction conditional:c2 {: RESULT = c1 + c2 + 1; :}
+        |               LPAREN conditional:c RPAREN {: RESULT = c; :}
+        |               CFCLEAR:e {: parser.addDoc("CFCLEAR",eleft); RESULT = 1; :}
+        |               CFBLOCK:e {: parser.addDoc("CFBLOCK",eleft); RESULT = 1; :}
+        |               CLCLEAR:e {: parser.addDoc("CLCLEAR",eleft); RESULT = 1; :}
+        |               CLBLOCK:e {: parser.addDoc("CLBLOCK",eleft); RESULT = 1; :}
+        |               CRCLEAR:e {: parser.addDoc("CRCLEAR",eleft); RESULT = 1; :}
+        |               CRBLOCK:e {: parser.addDoc("CRBLOCK",eleft); RESULT = 1; :}
+        |               NEXTB:e {: parser.addDoc("NEXTB",eleft); RESULT = 1; :}
+        |               NONEXTB:e {: parser.addDoc("NONEXTB",eleft); RESULT = 1; :}
+        |               ANYBBAG:e {: parser.addDoc("ANYBBAG",eleft); RESULT = 1; :}
+        |               NOBBAG:e {: parser.addDoc("NOBBAG",eleft); RESULT = 1; :}
+        |               FACINGN:e {: parser.addDoc("FACINGN",eleft); RESULT = 1; :}
+        |               FACINGS:e {: parser.addDoc("FACINGS",eleft); RESULT = 1; :}
+        |               FACINGE:e {: parser.addDoc("FACINGE",eleft); RESULT = 1; :}
+        |               FACINGW:e {: parser.addDoc("FACINGW",eleft); RESULT = 1; :}
+        |               NOFACINGN:e {: parser.addDoc("NOFACINGN",eleft); RESULT = 1; :}
+        |               NOFACINGS:e {: parser.addDoc("NOFACINGS",eleft); RESULT = 1; :}
+        |               NOFACINGE:e {: parser.addDoc("NOFACINGE",eleft); RESULT = 1; :}
+        |               NOFACINGW:e {: parser.addDoc("NOFACINGW",eleft); RESULT = 1; :}
+        ;
+
+ifzerokey           ::= IFZERO:e {: parser.addDoc("IFZERO",eleft); RESULT = 1; :}
+        ;
+
+not                 ::= NOT:e {: parser.addDoc("NOT",eleft); :}
+        ;
+
+conjunction         ::= AND:e {: parser.addDoc("AND",eleft); :}
+        |               OR:e {: parser.addDoc("OR",eleft); :}
+        ;
