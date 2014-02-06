@@ -34,7 +34,7 @@ public class LisMundo implements MouseListener,MouseWheelListener,AdjustmentList
             case 2:
                 Karelotitlan.world=null;
                 Karelotitlan.Mapedit=false;
-                TabMundo.editor.refresh(TabMundo.barraH.getValue(), TabMundo.barraV.getValue());
+                TabMundo.editor.reset(TabMundo.barraH.getValue(), TabMundo.barraV.getValue());
                 TabEjecutar.Mpanel2.reset(false);
             break;
             case 3:

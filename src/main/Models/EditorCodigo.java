@@ -17,7 +17,7 @@ import main.Views.Ventana2;
  */
 public class EditorCodigo extends VisorCodigo implements Runnable {
 
-    protected UndoManager undoManager = new UndoManager();
+    public  UndoManager undoManager = new UndoManager();
     private Thread d=new Thread(this);
     private Caret caret = getCaret();
     private JViewport viewport ;

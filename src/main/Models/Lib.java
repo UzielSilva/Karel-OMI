@@ -35,17 +35,5 @@ public class Lib {
             return new BufferedReader(new FileReader(s));
     }
     
-    public class TXT extends javax.swing.filechooser.FileFilter {
-        @Override
-        public boolean accept(File file) {
-            String filename = file.getName().toUpperCase();
-            if (file.isDirectory())
-                return true;
-            return filename.endsWith(".txt");
-        }
-        @Override
-        public String getDescription() {
-            return "*.txt";
-        }
-    }
+    
 }

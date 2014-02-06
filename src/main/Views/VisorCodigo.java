@@ -1,6 +1,6 @@
 package main.Views;
 
-import Compilers.Java.Lexer;
+import Compilers.Pascal.Lexer;
 import Compilers.Box;
 import java.awt.*;
 import java.io.IOException;

@@ -29,9 +29,10 @@ public class Karelotitlan extends javax.swing.JApplet {
   }
     public void initComponents(){
         setMinimumSize(new Dimension(660, 380));
+        reset();
         this.add(new Ventana2());
     }
     private void reset(){
-  lang = Box.JAVAEN;
+  lang = Box.PASCALES;
     }
 }
