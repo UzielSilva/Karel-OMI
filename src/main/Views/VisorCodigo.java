@@ -1,6 +1,6 @@
 package main.Views;
 
-import Compilers.Pascal.Lexer;
+import java_cup.runtime.Scanner;
 import Compilers.Box;
 import java.awt.*;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import main.Models.Karelotitlan;
 public class VisorCodigo extends JTextPane  {
     public static boolean breaak[]=new boolean[8000];
     public static Style style[]=new Style[7];
-    private Lexer lx;
+    private Scanner lx;
     private Reader read;
     public boolean canremember = true;
     public boolean hightlight = false;
@@ -73,9 +73,8 @@ public int getcaret(){
         }
         for (String curline : contents) {
             read =new StringReader(curline);
-        lx=new Lexer(read);
-        lx.setLanguage(Karelotitlan.lang);
             try {
+                lx=Karelotitlan.lang.getLexer(read);
                 int n=0;
                 Symbol sym;
                     int index=0;

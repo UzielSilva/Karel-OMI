@@ -4,8 +4,7 @@
  */
 package main.Controllers;
 
-import Compilers.Pascal.Lexer;
-import Compilers.Pascal.Parser;
+import java_cup.runtime.lr_parser;
 import Compilers.Program.EnvironmentK;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
@@ -157,11 +156,8 @@ public class LisPrograma implements MouseListener,CaretListener,KeyListener{
             } catch (BadLocationException e) {
             }
       Reader read=new StringReader(contents);
-        Lexer lexer=new Lexer(read);
-        lexer.setLanguage(Karelotitlan.lang);
-        Parser parser = new Parser(lexer);
-        parser.setLanguage(Karelotitlan.lang);
         try {
+            lr_parser parser = Karelotitlan.lang.getParser(read);
             parser.parse();
             Karelotitlan.parsedDoc = parser.parsedDoc.toArray(new String[0]);
             Karelotitlan.rows = parser.row.toArray(new Integer[0]);
@@ -175,6 +171,7 @@ public class LisPrograma implements MouseListener,CaretListener,KeyListener{
             TabEjecutar.Mpanel2.arranca();
             JOptionPane.showMessageDialog(Ventana2.programa,"Programa Compilado","Karel",JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
+            System.err.println(ex.getStackTrace());
         JOptionPane.showMessageDialog(Ventana2.programa,"Error de compilacion: " + ex.getMessage(),"Karel",JOptionPane.ERROR_MESSAGE);
         }
 //        textPane.setText(Compilador.adjust(textPane.doc));

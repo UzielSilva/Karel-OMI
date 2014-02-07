@@ -6,7 +6,7 @@
 
 package Compilers.Java;
 
-import Compilers.Box;
+import java.lang.reflect.Field;
 import java.util.Map.Entry;
 import java_cup.runtime.*;
 import java.util.HashMap;
@@ -327,11 +327,7 @@ public class Parser extends java_cup.runtime.lr_parser {
 
     }
 
-    
-
-    public ArrayList<String> parsedDoc;
-
-    public ArrayList<Integer> row;
+    public HashMap<Integer,String> symbols;
 
     public Integer docSize;
 
@@ -352,25 +348,39 @@ public class Parser extends java_cup.runtime.lr_parser {
 
     public void unrecovered_syntax_error(Symbol cur_token) throws java.lang.Exception{
         if(cur_token.sym != 1){
-            String s = (new Box(lang)).getType(cur_token.sym);
+            Symbols s = new Symbols();
+            Field[] syms = s.getClass().getFields();
+            symbols = new HashMap();
+            for(Field f : syms){
+                symbols.put(f.getInt(s), f.getName());
+            }
             if(cur_token.left == -1)
                 throw new java.lang.Exception("Syntax error: Unexpected EOF.");
-            throw new java.lang.Exception("Syntax error: Unexpected " + s + " at line: " + (cur_token.left +1) + ".");
-
+            short[] row = action_tab[cur_token.sym];
+            String ex = "Syntax error: Unexpected <" + symbols.get(cur_token.sym) + "> at line: " + (cur_token.left +1) + ".\nExpected:\n";
+            for(short r : row){
+                ex += ("<"+symbols.get((int)r)+">\n");
+            }
+            throw new java.lang.Exception(ex);
         }
-    }
-    
-    private Box.Language lang;
-    
-    public void setLanguage(Box.Language lang){
-        this.lang = lang;
     }
     
     public void syntax_error(Symbol cur_token) {
         if(cur_token.sym != 1){
-            String s = (new Box(lang)).getType(cur_token.sym);
-            report_error("Syntax error: Unexpected " + s + " at line: " + (cur_token.left +1) + ".",cur_token);
-
+                        Symbols s = new Symbols();
+            Field[] syms = s.getClass().getFields();
+            symbols = new HashMap();
+            for(Field f : syms){
+                try {
+                    symbols.put(f.getInt(s), f.getName());
+                } catch (Exception e) {}
+            }
+            short[] row = action_tab[cur_token.sym];
+            String ex = "Syntax error: Unexpected <" + symbols.get(cur_token.sym) + "> at line: " + (cur_token.left +1) + ".\nExpected:\n";
+            for(short r : row){
+                ex += ("<"+symbols.get((int)r)+">\n");
+            }
+            report_error("Syntax error: Unexpected <" + symbols.get(cur_token.sym) + "> at line: " + (cur_token.left +1) + ".",cur_token.sym);
         }
     }
 
@@ -386,6 +396,7 @@ public class Parser extends java_cup.runtime.lr_parser {
     public static void main(String args[]) throws Exception 
     {
         Lexer lexer = new Lexer(System.in);
+        lexer.setLanguage("EN");
         Parser parser = new Parser(lexer);
         parser.parse();
     }
@@ -395,7 +406,7 @@ public class Parser extends java_cup.runtime.lr_parser {
 /** Cup generated class to encapsulate user supplied action code.*/
 class CUP$Parser$actions {
 
-
+    
     private String contextParam = "";
     private HashMap<String,Integer> customMethod = new HashMap();
     private HashMap<String,Integer> customParamMethod = new HashMap();

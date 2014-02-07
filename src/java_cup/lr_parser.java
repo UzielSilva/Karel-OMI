@@ -1,6 +1,7 @@
 				    
 package java_cup.runtime;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 /** This class implements a skeleton table driven LR parser.  In general,
@@ -1250,5 +1251,8 @@ public abstract class lr_parser {
       }
       return result;
     }
+  public ArrayList<String> parsedDoc;
+
+  public ArrayList<Integer> row;
 }
 

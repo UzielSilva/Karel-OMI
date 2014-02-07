@@ -2,21 +2,21 @@ package Compilers;
 
 import java.util.HashMap;
 
-public class Box extends Languages {
+public class Box {
     
     private static HashMap<String,Integer> KeysTable;
     
     private static KeyWord[] KeysArray;
 
-    public Box(Language lang){
-        KeysArray = lang.KeysArray;
+    public Box(KeyWord[] lang){
+        KeysArray = lang;
         KeysTable = new HashMap();
         for(KeyWord k : KeysArray)
             KeysTable.put(k.getKey(), k.getObj());
     }
     
     public Integer gets(String str){
-        return KeysTable.get(str.toLowerCase());
+        return KeysTable.get(str);
     }
         
     public String getType(Integer i){

@@ -4,6 +4,7 @@ package Compilers.Pascal;
 
 import java_cup.runtime.*;
 import Compilers.Box;
+import Compilers.KeyWord;
 import java.util.*;
 import java.io.*;
 import java.awt.Point;
@@ -242,9 +243,18 @@ public class Lexer implements java_cup.runtime.Scanner {
     	return new Symbol(type, yyline, yycolumn, value);
   	}
         private Box Language;
-        public void setLanguage(Box.Language lang) {
-                Language = new Box(lang);
+        private HashMap<String,KeyWord[]> map = new HashMap();
+        public void setLanguage(String lang) throws Exception {
+            if (lang == null)
+                throw new Exception("Please use a valid String");
+            KeyWord[] target = map.get(lang);
+            if (target == null)
+                throw new Exception("Language "+ lang +" is not supported.");
+            Language = new Box(target);
   	}
+        public String[] getAvaliableLanguages(){
+            return map.keySet().toArray(new String[0]);
+        }
         public Box getBox() {
                 return Language;
   	}
@@ -257,7 +267,8 @@ public class Lexer implements java_cup.runtime.Scanner {
    * @param   in  the java.io.Reader to read input from.
    */
   public Lexer(java.io.Reader in) {
-          Language = new Box(Box.PASCALES);
+          map.put("ES", Compilers.Pascal.Language.KeysES.KeysArray);
+          map.put("EN", Compilers.Pascal.Language.KeysEN.KeysArray);
     this.zzReader = in;
   }
 
@@ -662,7 +673,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           }
         case 24: break;
         case 6: 
-          { Integer k = (Language.gets(yytext()));
+          { Integer k = (Language.gets(yytext().toLowerCase()));
     	if (k != null) 
     		return symbol(k);
     	return symbol(Symbols.NAME,yytext());

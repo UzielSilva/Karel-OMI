@@ -2,6 +2,7 @@ package Compilers.Pascal;
 
 import java_cup.runtime.*;
 import Compilers.Box;
+import Compilers.KeyWord;
 import java.util.*;
 import java.io.*;
 import java.awt.Point;
@@ -17,16 +18,26 @@ import java.awt.Point;
     	return new Symbol(type, yyline, yycolumn, value);
   	}
         private Box Language;
-        public void setLanguage(Box.Language lang) {
-                Language = new Box(lang);
+        private HashMap<String,KeyWord[]> map = new HashMap();
+        public void setLanguage(String lang) throws Exception {
+            if (lang == null)
+                throw new Exception("Please use a valid String");
+            KeyWord[] target = map.get(lang);
+            if (target == null)
+                throw new Exception("Language "+ lang +" is not supported.");
+            Language = new Box(target);
   	}
+        public String[] getAvaliableLanguages(){
+            return map.keySet().toArray(new String[0]);
+        }
         public Box getBox() {
                 return Language;
   	}
 %}
 
 %init{
-        Language = new Box(Box.PASCALES);
+          map.put("ES", Compilers.Pascal.Language.KeysES.KeysArray);
+          map.put("EN", Compilers.Pascal.Language.KeysEN.KeysArray);
 %init}
 
 %class Lexer
@@ -85,7 +96,7 @@ KRightComment = "}"
     }
     
     {Word} {
-    	Integer k = (Language.gets(yytext()));
+    	Integer k = (Language.gets(yytext().toLowerCase()));
     	if (k != null) 
     		return symbol(k);
     	return symbol(Symbols.NAME,yytext());

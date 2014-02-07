@@ -1,6 +1,6 @@
 package main.Models;
 
-import Compilers.Box;
+import Compilers.Compiler;
 import Compilers.Program.EnvironmentK;
 import Compilers.Program.Program;
 import java.awt.Dimension;
@@ -22,7 +22,7 @@ public class Karelotitlan extends javax.swing.JApplet {
     public static Integer[] rows=null;
     public static EnvironmentK env=null;
     public static Program program=null;
-    public static Box.Language lang = null;
+    public static Compiler lang = null;
     
   public void init() {
     initComponents();
@@ -33,6 +33,8 @@ public class Karelotitlan extends javax.swing.JApplet {
         this.add(new Ventana2());
     }
     private void reset(){
-  lang = Box.PASCALES;
+        lang = new Compiler();
+        lang.setParam("UsrLang", "ES");
+        lang.setParam("ProgLang", "Pascal");
     }
 }
