@@ -141,7 +141,7 @@ public class Program {
                 Parameter.pop();
                 IterVal = IterStack.pop();
                 Type = Types.pop();
-            }while(Type == INSTRUCTION);
+            }while(Type != INSTRUCTION);
         }
         return null;
     }

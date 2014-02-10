@@ -340,6 +340,8 @@ public class Parser extends java_cup.runtime.lr_parser {
 
     public String errors;
     
+    private Integer state;
+    
     public boolean giveMeInt = false;
 
     public void addDoc(String s, Integer i){
@@ -359,14 +361,18 @@ public class Parser extends java_cup.runtime.lr_parser {
             Field[] syms = s.getClass().getFields();
             symbols = new HashMap();
             for(Field f : syms){
-                symbols.put(f.getInt(s), f.getName());
+                try {
+                    symbols.put(f.getInt(s), f.getName());
+                } catch (Exception e) {}
             }
             if(cur_token.left == -1)
                 throw new java.lang.Exception("Syntax error: Unexpected EOF.");
-            short[] row = action_tab[cur_token.sym];
+            short[] row = action_tab[state];
             String ex = "Syntax error: Unexpected <" + symbols.get(cur_token.sym) + "> at line: " + (cur_token.left +1) + ".\nExpected:\n";
-            for(short r : row){
-                ex += ("<"+symbols.get((int)r)+">\n");
+            for(int i = 0; i < row.length -1; i++){
+                String str = symbols.get((int)row[i]);
+                if (str != null)
+                    ex += ("<"+symbols.get((int)row[i])+">\n");
             }
             throw new java.lang.Exception(ex);
         }
@@ -382,12 +388,13 @@ public class Parser extends java_cup.runtime.lr_parser {
                     symbols.put(f.getInt(s), f.getName());
                 } catch (Exception e) {}
             }
-            short[] row = action_tab[cur_token.sym];
+            this.state = ((Symbol)stack.peek()).parse_state;
+            short[] row = action_tab[state];
             String ex = "Syntax error: Unexpected <" + symbols.get(cur_token.sym) + "> at line: " + (cur_token.left +1) + ".\nExpected:\n";
             for(short r : row){
                 ex += ("<"+symbols.get((int)r)+">\n");
             }
-            report_error("Syntax error: Unexpected <" + symbols.get(cur_token.sym) + "> at line: " + (cur_token.left +1) + ".",cur_token.sym);
+            report_error(ex,cur_token.left);
         }
     }
 
