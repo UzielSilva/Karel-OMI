@@ -114,14 +114,14 @@ public class LisMundo implements MouseListener,MouseWheelListener,AdjustmentList
         TabMundo.editor.savez(TabMundo.barraH.getValue(), TabMundo.barraV.getValue());
             TabEjecutar.Mpanel2.reset(false);
     }
-    public void mGuardar() {
+    public static void mGuardar() {
         if (Karelotitlan.world != null) {
             TabMundo.editor.save();
         } else {
             mGuardarComo();
         }
     }
-    public  void mGuardarComo() {
+    public  static void mGuardarComo() {
         JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new MDO());
         int returnVal = fc.showSaveDialog(Ventana2.mundo);
@@ -137,7 +137,7 @@ public class LisMundo implements MouseListener,MouseWheelListener,AdjustmentList
         }
     }
     
-    public class MDO extends javax.swing.filechooser.FileFilter {
+    public static class MDO extends javax.swing.filechooser.FileFilter {
         @Override
         public boolean accept(File file) {
             String filename = file.getName().toUpperCase();

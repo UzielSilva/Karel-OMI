@@ -4,9 +4,7 @@
  */
 package main.Controllers;
 
-import java_cup.runtime.lr_parser;
 import Compilers.Program.EnvironmentK;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -17,6 +15,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java_cup.runtime.lr_parser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.CaretEvent;
@@ -133,7 +132,7 @@ public class LisPrograma implements MouseListener,CaretListener,KeyListener{
                 Logger.getLogger(Ventana2.class.getName()).log(Level.SEVERE, null, ex);
             }
     }             
-    private void cGuardarComo() {
+    private static void cGuardarComo() {
         JFileChooser fc = new JFileChooser();
         fc.setFileFilter(new TXT());
         if (fc.showSaveDialog(Ventana2.programa) == JFileChooser.APPROVE_OPTION) {
@@ -142,7 +141,7 @@ public class LisPrograma implements MouseListener,CaretListener,KeyListener{
         }
     }
 
-    private void cGuardar() {
+    public static void cGuardar() {
         if (Karelotitlan.code != null) {
             TabPrograma.textPane.save(Karelotitlan.code);
         } else {
@@ -177,7 +176,7 @@ public class LisPrograma implements MouseListener,CaretListener,KeyListener{
 //        textPane.setText(Compilador.adjust(textPane.doc));
         
     }
-    public class TXT extends javax.swing.filechooser.FileFilter {
+    public static class TXT extends javax.swing.filechooser.FileFilter {
         @Override
         public boolean accept(File file) {
             String filename = file.getName().toUpperCase();
