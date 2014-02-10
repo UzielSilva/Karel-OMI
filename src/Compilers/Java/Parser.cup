@@ -145,6 +145,7 @@ non terminal Integer
                 program,            class_name,         class_body,         declarations,
                 method_declaration, method_declarator,  defparameter,       constructor,          
                 method_const,       block,              statement_list,     statement,
+                sentence,
 
                 //  If symbols
 
@@ -260,15 +261,20 @@ method_const        ::= NAME:n defparameter {:
                         :}
         ;
 
-block               ::= LKEY statement_list:s RKEY
+block               ::= LKEY statement_list:s RKEY {: RESULT = s; :}
         ;
 
-statement_list      ::= common_statement:s1 SEMICOL statement_list:s2 {: RESULT = s1+s2; :}
+statement_list      ::= sentence:s1 statement_list:s2 {: RESULT = s1+s2; :}
+        |               structure:s1 statement_list:s2 {: RESULT = s1+s2; :}
         |               common_statement:s {: RESULT = s; :}
         ;
         
-statement           ::= common_statement:s SEMICOL {: RESULT = s; :}
-        |               LKEY statement_list:s RKEY {: RESULT = s; :}
+sentence            ::= common_statement:s SEMICOL {: RESULT = s; :}
+        ;
+
+statement           ::= sentence:s {: RESULT = s; :}
+        |               structure:s {: RESULT = s; :}
+        |               block:s {: RESULT = s; :}
         ;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -364,7 +370,6 @@ iteratekey          ::= ITERATE:e {: parser.addDoc("ITERATE",eleft); :}
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 common_statement    ::=  /* No statement */ {: RESULT = 0; :}
-        |               structure:s {: RESULT = s; :}
         |               act LPAREN RPAREN {: RESULT = 1; :}
         |               custom_statement:s  RPAREN {: RESULT = s; :}
         |               custom_p_statement:s  args:p RPAREN {: RESULT = s+p; :}
@@ -374,7 +379,7 @@ common_statement    ::=  /* No statement */ {: RESULT = 0; :}
                                 parser.report_error("Exit instruction in main.",(Object)eleft);
                             }else{
                                 RESULT = 1;
-                                parser.addDoc("RETURN",eleft); 
+                                parser.addDoc("EXITINST",eleft); 
                             }
                         :}
         ;

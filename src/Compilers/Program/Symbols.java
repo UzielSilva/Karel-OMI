@@ -46,7 +46,7 @@ public class Symbols {
   public static final int PUTBPR = 35;
   public static final int TURNOFF = 36; 
   public static final int CALL = 37;
-
+  public static final int EXITINST = 38;
 
 }
 

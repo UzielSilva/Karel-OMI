@@ -315,7 +315,7 @@ common_statement    ::=  /* No statement */ {: RESULT = 0; :}
                                 parser.report_error("Exit instruction in main.",(Object)eleft);
                             }else{
                                 RESULT = 1;
-                                parser.addDoc("RETURN",eleft); 
+                                parser.addDoc("EXITINST",eleft); 
                             }
                         :}
         ;

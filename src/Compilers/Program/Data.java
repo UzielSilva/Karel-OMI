@@ -30,6 +30,7 @@ class Data {
         new KeyWord( "OR"                           , Symbols.OR ),
         new KeyWord( "NOT"                          , Symbols.NOT ),
         new KeyWord( "RETURN"                       , Symbols.RETURN ),
+        new KeyWord( "EXITINST"                     , Symbols.EXITINST ),
 
 
     };

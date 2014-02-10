@@ -130,19 +130,18 @@ public class Program {
         if(Symbols.RETURN == state){
             Counter = Dirs.pop();
             Parameter.pop();
-            Integer t = Types.pop();
-            Boolean b1 = t == ITERATION;
-            String s = CommandList[Counter];
-            Boolean b2 = s.compareTo("ITERATE") != 0;
             IterVal = IterStack.pop();
-            if( t == ITERATION && CommandList[Counter].compareTo("ITERATE") != 0 ){    
-                do{
-                    Counter = Dirs.pop();
-                    Parameter.pop();
-                    IterVal = IterStack.pop();
-                }while(Types.pop() == INSTRUCTION);
-            }
+            Types.pop();
             return null;
+        }
+        if(Symbols.EXITINST == state){
+            Integer Type = null;
+            do {
+                Counter = Dirs.pop();
+                Parameter.pop();
+                IterVal = IterStack.pop();
+                Type = Types.pop();
+            }while(Type == INSTRUCTION);
         }
         return null;
     }
