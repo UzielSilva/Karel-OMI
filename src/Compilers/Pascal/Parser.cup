@@ -272,7 +272,7 @@ while              ::=  WHILE conditional:c dokey:d statement:s  {:
 
                             parser.addDoc("BRANCH",sleft);
                             RESULT = c + d + s + 2;
-                            parser.addDoc((new Integer(parser.docSize - (s+3))).toString(),sleft);
+                            parser.addDoc((new Integer(parser.docSize - (s+4))).toString(),sleft);
                             parser.setDoc(parser.docSize.toString(),sleft,parser.docSize-(s+3));
 
                         :}

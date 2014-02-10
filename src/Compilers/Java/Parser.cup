@@ -329,8 +329,8 @@ elsekey             ::= ELSE:t {:
 while              ::=  WHILE LPAREN conditional:c dokey:d statement:s  {: 
 
                             parser.addDoc("BRANCH",sleft);
-                            RESULT = 1 + c + d + s + 2;
-                            parser.addDoc((new Integer(parser.docSize - RESULT + 2)).toString(),sleft);
+                            RESULT = c + d + s + 2;
+                            parser.addDoc((new Integer(parser.docSize - (s+4))).toString(),sleft);
                             parser.setDoc(parser.docSize.toString(),sleft,parser.docSize-(s+3));
 
                         :}
