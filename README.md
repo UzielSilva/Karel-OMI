@@ -1,13 +1,12 @@
 Karel the Robot OMI
 ====
+This is a project made for the Mexican Computing Olympiad(Olimpiada Mexicana de Informática).
 
-An project for Mexican Computing Olympiad(Olimpiada Mexicana de Informática in Spanish).
+The objective of this project is to provide an useful tool for learning and developing code mainly by practice, with an easy language called Karel the Robot. 
 
-The purpose of this project is provide a tool for learn to develop code, with an easy language called Karel the Robot.
-
-Karel is an educational programming language for beginners, created by Richard E. Pattis. Now, this language is used in OMI for find talent students. Training is the principal purpose for Karel in OMI.
+Karel it's an educational programming language in Pascal or Java that is made for beginners. created by Richard E. Pattis. Now this language is used to find the most talented students.
 
 Links:
 
-OMI Official webpage:
+OMI Official web-page:
 http://www.olimpiadadeinformatica.org.mx/OMI/OMI/Inicio.aspx
