@@ -6,12 +6,12 @@ public class Box {
     
     private static HashMap<String,Integer> KeysTable;
     
-    private static KeyWord[] KeysArray;
+    private KeysDictionary Keys;
 
-    public Box(KeyWord[] lang){
-        KeysArray = lang;
+    public Box(KeysDictionary keys){
+        Keys = keys;
         KeysTable = new HashMap();
-        for(KeyWord k : KeysArray)
+        for(KeyWord k : Keys.getKeysArray())
             KeysTable.put(k.getKey(), k.getObj());
     }
     
@@ -20,7 +20,17 @@ public class Box {
     }
         
     public String getType(Integer i){
-        for(KeyWord k : KeysArray){
+        
+        if (i == Keys.getError())
+            return "error";
+            
+        if (i == Keys.getName())
+            return "name";
+            
+        if (i == Keys.getNumber())
+            return "number";
+        
+        for(KeyWord k : Keys.getKeysArray()){
             Integer in = gets(k.getKey());
             if(in == i)
                 return k.getKey();

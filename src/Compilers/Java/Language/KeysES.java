@@ -1,13 +1,29 @@
 package Compilers.Java.Language;
 
+import Compilers.KeysDictionary;
 import Compilers.KeyWord;
 import Compilers.Java.Symbols;
 
-public class KeysES{
+public class KeysES implements KeysDictionary {
 	
+	public KeyWord[] getKeysArray(){
+	    return KeysArray;
+	}
+	
+	public Integer getError(){
+	    return Symbols.error;
+	}
+	
+	public Integer getName(){
+	    return Symbols.NAME;
+	}
+	
+	public Integer getNumber(){
+	    return Symbols.NUMBER;
+	}
+    
     public static final KeyWord[] KeysArray = {
 
-        new KeyWord( "error"                        , Symbols.error),
         new KeyWord( ";"                            , Symbols.SEMICOL),
         new KeyWord( "("                            , Symbols.LPAREN),
     	new KeyWord( ")"                            , Symbols.RPAREN),
@@ -60,8 +76,5 @@ public class KeysES{
         new KeyWord( "noOrientadoAlEste"            , Symbols.NOFACINGE ),
         new KeyWord( "noOrientadoAlOeste"           , Symbols.NOFACINGW ),
         new KeyWord( "siEsCero"                     , Symbols.IFZERO),
-
-        new KeyWord( "name"                         , Symbols.NAME ),
-        new KeyWord( "number"                       , Symbols.NUMBER ),
     };
 }

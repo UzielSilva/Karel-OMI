@@ -3,6 +3,7 @@ package Compilers.Java;
 import java_cup.runtime.*;
 import Compilers.Box;
 import Compilers.KeyWord;
+import Compilers.KeysDictionary;
 import java.util.*;
 import java.io.*;
 import java.awt.Point;
@@ -18,11 +19,11 @@ import java.awt.Point;
     	return new Symbol(type, yyline, yycolumn, value);
   	}
         private Box Language;
-        private HashMap<String,KeyWord[]> map = new HashMap();
+        private HashMap<String,KeysDictionary> map = new HashMap();
         public void setLanguage(String lang) throws Exception {
             if (lang == null)
                 throw new Exception("Please use a valid String");
-            KeyWord[] target = map.get(lang);
+            KeysDictionary target = map.get(lang);
             if (target == null)
                 throw new Exception("Language "+ lang +" is not supported.");
             Language = new Box(target);
@@ -36,8 +37,8 @@ import java.awt.Point;
 %}
 
 %init{
-          map.put("ES", Compilers.Java.Language.KeysES.KeysArray);
-          map.put("EN", Compilers.Java.Language.KeysEN.KeysArray);
+          map.put("ES", new Compilers.Java.Language.KeysES());
+          map.put("EN", new Compilers.Java.Language.KeysEN());
 %init}
 
 %class Lexer

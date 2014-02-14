@@ -1,13 +1,29 @@
 package Compilers.Pascal.Language;
 
 import Compilers.KeyWord;
+import Compilers.KeysDictionary;
 import Compilers.Pascal.Symbols;
 
-public class KeysEN{
+public class KeysEN implements KeysDictionary {
 	
+	public KeyWord[] getKeysArray(){
+	    return KeysArray;
+	}
+	
+	public Integer getError(){
+	    return Symbols.error;
+	}
+	
+	public Integer getName(){
+	    return Symbols.NAME;
+	}
+	
+	public Integer getNumber(){
+	    return Symbols.NUMBER;
+	}
+    
     public static final KeyWord[] KeysArray = {
 
-        new KeyWord( "error"                        , Symbols.error),
         new KeyWord( ";"                            , Symbols.SEMICOL),
         new KeyWord( "("                            , Symbols.LPAREN),
     	new KeyWord( ")"                            , Symbols.RPAREN),
@@ -66,8 +82,5 @@ public class KeysEN{
         new KeyWord( "not-facing-east"              , Symbols.NOFACINGE ),
         new KeyWord( "not-facing-west"              , Symbols.NOFACINGW ),
         new KeyWord( "iszero"                       , Symbols.IFZERO),
-
-        new KeyWord( "name"                         , Symbols.NAME ),
-        new KeyWord( "number"                       , Symbols.NUMBER ),
     };
 }
