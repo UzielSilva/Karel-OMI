@@ -18,7 +18,7 @@ import main.Models.Karelotitlan;
  */
 public class VisorCodigo extends JTextPane  {
     public static boolean breaak[]=new boolean[8000];
-    public static Style style[]=new Style[7];
+    public static Style style[]=new Style[8];
     private Scanner lx;
     private Reader read;
     public boolean canremember = true;
@@ -49,6 +49,7 @@ public class VisorCodigo extends JTextPane  {
         style(4,"green",new Color(0, 255, 0),false);
         style(5,"error",new Color(255, 0, 0),true);
         style[6] = this.addStyle("high", null);
+        style(7,"coment",new Color(200, 200, 200),false);
         StyleConstants.setLeftIndent(style[6], 37f);
         this.setParagraphAttributes(style[6], false);
         doc.setCharacterAttributes(0, 1, this.getStyle("Black"), true);
@@ -96,8 +97,11 @@ public int getcaret(){
 //                    if(n==1){
 //                        doc.setCharacterAttributes(start , curline.length(), this.getStyle("error"), true);
 //                    }
-                    if(n==50||n==51){
+                    if(n==50){
                         doc.setCharacterAttributes(start +index, curline.length()-index, this.getStyle("red"), true);
+                    }
+                    if(n==51){
+                        doc.setCharacterAttributes(start +index, curline.length()-index, this.getStyle("coment"), true);
                     }
                 }
             } catch (Exception ex) {
