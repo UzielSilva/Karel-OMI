@@ -4,6 +4,8 @@
  */
 package main.Controllers;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
@@ -17,13 +19,14 @@ import javax.swing.JFileChooser;
 import main.Models.Karelotitlan;
 import main.Views.TabEjecutar;
 import main.Views.TabMundo;
+import main.Views.TabPrograma;
 import main.Views.Ventana2;
 
 /**
  *
  * @author macbook
  */
-public class LisMundo implements MouseListener,MouseWheelListener,AdjustmentListener,KeyListener{
+public class LisMundo implements MouseListener,MouseWheelListener,AdjustmentListener,KeyListener,ActionListener{
     int method=-1;
     public LisMundo(int i){
         method=i;
@@ -134,6 +137,15 @@ public class LisMundo implements MouseListener,MouseWheelListener,AdjustmentList
                     }
             Karelotitlan.world = JFC;
             TabMundo.editor.save();
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(method>=9&&method<=12){
+            Karelotitlan.reset(TabMundo.ES.isSelected()?"ES":"EN",TabMundo.pascal.isSelected()?"Pascal":"Java");
+            TabPrograma.textPane.search(true);
+            TabEjecutar.textPane2.search(true);
         }
     }
     

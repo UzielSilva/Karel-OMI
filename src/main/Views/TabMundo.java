@@ -11,9 +11,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollBar;
 import javax.swing.JTextField;
 import main.Controllers.LisMundo;
@@ -41,7 +43,13 @@ public class TabMundo extends Container {
     public static EditorMapas editor = null;
     public static JTextField tzumba = null;
     public static JTextField tzamba = null;
-
+    public static ButtonGroup code= null;
+    public static ButtonGroup lang= null;
+    public static JRadioButton ES= null;
+    public static JRadioButton EN= null;
+    public static JRadioButton java= null;
+    public static JRadioButton pascal= null;
+    
     public TabMundo() {
         reset();
         window();
@@ -57,9 +65,18 @@ public class TabMundo extends Container {
         infinitos = new JButton("Infinitos");
         barraH = new JScrollBar(JScrollBar.HORIZONTAL, 0, 5, 0, 87);
         barraV = new JScrollBar(JScrollBar.VERTICAL, 95, 10, 0, 105);
-        lzumba = new JLabel("Zumbadores en la mochila");
+        lzumba = new JLabel("Zumbadores / mochila");
         tzumba = new JTextField("0");
         tzamba = new JTextField("0");
+        code=new ButtonGroup();
+        lang=new ButtonGroup();
+        ES=new JRadioButton("ES");
+        ES.setSelected(true);
+        EN=new JRadioButton("EN");
+        pascal=new JRadioButton("Pascal");
+        pascal.setSelected(true);
+        
+        java=new JRadioButton("Java");
     }
 
     private void window() {
@@ -75,13 +92,27 @@ public class TabMundo extends Container {
         c2.add(abrir);
         c2.add(guardar);
         c2.add(guardarcomo);
-        c222.setLayout(new GridLayout(2, 3, 2, 2));
-        c222.setPreferredSize(new Dimension(360, 65));
+        c222.setLayout(new GridLayout(2, 2));
+        c222.setPreferredSize(new Dimension(440, 65));
+        JPanel codepanel = new JPanel(new GridLayout(1, 0));
+        codepanel.add(pascal);
+        codepanel.add(java);
+        JPanel langpanel = new JPanel(new GridLayout(1, 0));
+        langpanel.add(ES);
+        langpanel.add(EN);
+        langpanel.setOpaque(false);
+        codepanel.setOpaque(false);
         c222.add(lzumba);
         c222.add(tzumba);
+        c222.add(codepanel);
         pp.setVisible(false);
         c222.add(pp);
         c222.add(infinitos);
+        code.add(pascal);
+        code.add(java);
+        lang.add(ES);
+        lang.add(EN);   
+        c222.add(langpanel);
         c22.setLayout(new FlowLayout());
         c22.add(c2);
         c22.add(c222);
@@ -115,6 +146,11 @@ public class TabMundo extends Container {
         editor.addMouseWheelListener(new LisMundo(7));
         editor.addMouseListener(new LisMundo(7));
         tzamba.addKeyListener(new LisMundo(8));
+        
+        ES.addActionListener(new LisMundo(9));
+        EN.addActionListener(new LisMundo(10));
+        java.addActionListener(new LisMundo(11));
+        pascal.addActionListener(new LisMundo(12));
     
     }
     

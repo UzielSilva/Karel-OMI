@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package main.Views;
 
 import java.awt.BorderLayout;
@@ -124,27 +120,3 @@ public class TabEjecutar extends Container{
         edetener.addMouseListener(new LisEjecutar(5));
     }
 }
-//        eadelante.addMouseListener(new java.awt.event.MouseAdapter() {
-//            @Override
-//            public void mouseReleased(java.awt.event.MouseEvent evt) {
-//                Mpanel2.avanzauno();
-//            }
-//        });
-//        einiciar.addMouseListener(new java.awt.event.MouseAdapter() {
-//            @Override
-//            public void mouseReleased(java.awt.event.MouseEvent evt) {
-//                Mpanel2.reset(true);
-//            }
-//        });
-//        ecorrer.addMouseListener(new java.awt.event.MouseAdapter() {
-//            @Override
-//            public void mouseReleased(java.awt.event.MouseEvent evt) {
-//                Mpanel2.corre();
-//            }
-//        });
-//        edetener.addMouseListener(new java.awt.event.MouseAdapter() {
-//            @Override
-//            public void mouseReleased(java.awt.event.MouseEvent evt) {
-//                Mpanel2.stop();
-//            }
-//        });

@@ -34,7 +34,7 @@ public class Karelotitlan extends javax.swing.JApplet {
 
     @Override
     public void init() {
-        reset();
+        reset("ES","Pascal");
         this.add(new Ventana2(false));
     }
 
@@ -76,16 +76,16 @@ public class Karelotitlan extends javax.swing.JApplet {
                       
 	}
 });
-        reset();
+        reset("ES","Pascal");
         f.add(new Ventana2(true));
         f.pack();
         f.setSize(new Dimension(860, 580));
         f.setVisible(true);
     }
 
-    private static void reset() {
+    public static void reset(String idioma,String codigo) {
         lang = new Compiler();
-        lang.setParam("UsrLang", "ES");
-        lang.setParam("ProgLang", "Pascal");
+        lang.setParam("UsrLang", idioma);
+        lang.setParam("ProgLang", codigo);
     }
 }

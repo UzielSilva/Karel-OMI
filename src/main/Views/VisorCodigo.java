@@ -1,13 +1,11 @@
 package main.Views;
 
-import java_cup.runtime.Scanner;
-import Compilers.Box;
 import java.awt.*;
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java_cup.runtime.Scanner;
 import java_cup.runtime.Symbol;
 import javax.swing.*;
 import javax.swing.text.*;
