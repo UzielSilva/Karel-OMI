@@ -5,6 +5,8 @@
 package main.Controllers;
 
 import Compilers.Program.EnvironmentK;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -23,6 +25,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import main.Models.Karelotitlan;
 import main.Views.TabEjecutar;
+import main.Views.TabMundo;
 import main.Views.TabPrograma;
 import main.Views.Ventana2;
 
@@ -30,7 +33,7 @@ import main.Views.Ventana2;
  *
  * @author macbook
  */
-public class LisPrograma implements MouseListener,CaretListener,KeyListener{
+public class LisPrograma implements MouseListener,CaretListener,KeyListener,ActionListener{
     int method=-1;
             boolean paste=false;
             boolean action=false;
@@ -175,6 +178,14 @@ public class LisPrograma implements MouseListener,CaretListener,KeyListener{
         }
 //        textPane.setText(Compilador.adjust(textPane.doc));
         
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(method>=9&&method<=12){
+            Karelotitlan.reset(TabPrograma.ES.isSelected()?"ES":"EN",TabPrograma.pascal.isSelected()?"Pascal":"Java");
+            TabPrograma.textPane.search(true);
+        TabEjecutar.textPane2.search(true);
+        }
     }
     public static class TXT extends javax.swing.filechooser.FileFilter {
         @Override
